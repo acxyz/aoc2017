@@ -25,8 +25,10 @@ public class Main {
         }
         total = calculatePuzzleTotal(PUZZLE_INPUT);
         // unit test:
-        if (total != 1044) {
-            throw new RuntimeException("calculatePuzzleTotal method failed! total was " + total);
+        if (phase1 && total != 1044) {
+            throw new RuntimeException("calculatePuzzleTotal method failed! Expecting 1044, total was " + total);
+        } else if (total != 1054) {
+            throw new RuntimeException("calculatePuzzleTotal method failed! Expecting 1054, total was " + total);
         }
         print("Puzzle Solution is " + Integer.toString(total));
     }
