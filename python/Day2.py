@@ -1,4 +1,26 @@
+def getLineSubTotalPhase1(int_list):
+	return max(int_list) - min(int_list)
+
+
+def processLine(line):
+	print ("LINE: " + line)
+	ss_vals = list(map(int, line.split()))
+	# diff = max(ss_vals) - min(ss_vals)
+	# return diff
+	return getLineSubTotalPhase1(ss_vals)
+	
+
 print ("Hello something")
+
+	# phase two:
+	
+	# It sounds like the goal is to find the only two numbers in each row where one evenly 
+# divides the other - that is, where the result of the division operation is a whole 
+# number. They would like you to find those numbers on each line, divide them, and add up 
+# each line's result.
+	
+
+
 
 ss_data = """62	1649	1731	76	51	1295	349	719	52	1984	2015	2171	981	1809	181	1715
 161	99	1506	1658	84	78	533	242	1685	86	107	1548	670	960	1641	610
@@ -19,24 +41,24 @@ ss_data = """62	1649	1731	76	51	1295	349	719	52	1984	2015	2171	981	1809	181	1715
 
 # print (ss_data)
 
+
 ss_lines = ss_data.split('\n')
 total = 0
 for l in ss_lines:
-	print ("LINE: " + l)
-	ss_vals = list(map(int, l.split()))
-	# ss_vals = [int(x) for x in l.split()]
-	diff = max(ss_vals) - min(ss_vals)
-	print("Diff is " + str(diff))
-	total += diff
-	# for v in ss_vals:
-		# total += v
-		# print(v)
-	# print()
-	# print (total)
+	
+	df = processLine(l);
+	print("Diff is " + str(df))
+	total += df
+
 	print()
 	
 
-	
+if (total != 44216):
+	raise ValueError("Unit test fails, total is " + str(total))
 	
 	
 print ("Checksum is " + str(total))
+
+
+	
+	
