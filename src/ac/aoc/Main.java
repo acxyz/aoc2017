@@ -21,20 +21,23 @@ public class Main {
         for (String arg : args) {
             print(arg);
         }
-        runPuzzleInput();
+        total = calculatePuzzleTotal(PUZZLE_INPUT);
+        // unit test:
+        if (total != 1044) {
+            throw new RuntimeException("calculatePuzzleTotal method failed! total was " + total);
+        }
         print("Puzzle Solution is " + Integer.toString(total));
     }
 
 
-    private static void runPuzzleInput() {
-
-        String p = PUZZLE_INPUT;
-        if (p.length() <= 0) return;
+    private static int calculatePuzzleTotal(String p) {
+        int tot = 0;
+        if (p.length() <= 0) return 0;
 
         int first_digit = getFirstDigit(p);
 
         while (p.length() > 0) {
-            print(p + " | " + Integer.toString(total));
+            print(p + " | " + Integer.toString(tot));
             int current_digit = getFirstDigit(p);
             int next_digit;
             if (p.length() > 1) {
@@ -48,9 +51,10 @@ public class Main {
             if (current_digit == next_digit) {
                 print(current_digit);
                 print(next_digit);
-                total += current_digit;
+                tot += current_digit;
             }
         }
+        return tot;
     }
 
 
