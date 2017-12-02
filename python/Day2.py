@@ -17,9 +17,26 @@ ss_data = """62	1649	1731	76	51	1295	349	719	52	1984	2015	2171	981	1809	181	1715
 2208	2236	1451	621	1937	1952	865	61	1934	49	1510	50	1767	59	194	1344
 94	2312	2397	333	1192	106	2713	2351	2650	2663	703	157	89	510	1824	125"""
 
-print (ss_data)
+# print (ss_data)
 
 ss_lines = ss_data.split('\n')
+total = 0
 for l in ss_lines:
 	print ("LINE: " + l)
+	ss_vals = list(map(int, l.split()))
+	# ss_vals = [int(x) for x in l.split()]
+	diff = max(ss_vals) - min(ss_vals)
+	print("Diff is " + str(diff))
+	total += diff
+	# for v in ss_vals:
+		# total += v
+		# print(v)
+	# print()
+	# print (total)
+	print()
 	
+
+	
+	
+	
+print ("Checksum is " + str(total))
