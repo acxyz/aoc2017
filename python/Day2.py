@@ -1,13 +1,37 @@
 def getLineSubTotalPhase1(int_list):
 	return max(int_list) - min(int_list)
 
-
+def getLineSubTotalPhase2(int_list):
+	
+	int_sorted = sorted(int_list)
+	# print ("MAX: " + str(max(int_sorted)))
+	print(int_sorted)
+	
+	for  i in range(0 , len(int_sorted) -1) :
+		break_now = False
+		# print ("I: " + str(int_sorted[i]))
+		for j in range(1 , len(int_sorted)) :
+			# print ("J: " + str(int_sorted[j]))
+			if i != j and 0 == int_sorted[j] % int_sorted[i]:
+				diff = int(int_sorted[j]/int_sorted[i])
+				# print ("BREAK")
+				break_now = True
+				break
+		if break_now:
+			break
+	return diff
+			
+	
+	
+	
+	
+	
 def processLine(line):
-	print ("LINE: " + line)
+	
 	ss_vals = list(map(int, line.split()))
 	# diff = max(ss_vals) - min(ss_vals)
 	# return diff
-	return getLineSubTotalPhase1(ss_vals)
+	return getLineSubTotalPhase2(ss_vals)
 	
 
 print ("Hello something")
@@ -49,12 +73,14 @@ for l in ss_lines:
 	df = processLine(l);
 	print("Diff is " + str(df))
 	total += df
+	print ("Total is " + str(total))
 
 	print()
+	# input("Press enter to continue...")
 	
 
-if (total != 44216):
-	raise ValueError("Unit test fails, total is " + str(total))
+# if (total != 44216):
+	# raise ValueError("Unit test fails, total is " + str(total))
 	
 	
 print ("Checksum is " + str(total))
