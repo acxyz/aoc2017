@@ -2,7 +2,7 @@ package ac.aoc;
 
 import static java.lang.Character.isDigit;
 
-public class Main {
+public class Day1 {
     /*
         The captcha requires you to review a sequence of digits
         (your puzzle input) and
@@ -27,7 +27,7 @@ public class Main {
         // unit test:
         if (phase1 && total != 1044) {
             throw new RuntimeException("calculatePuzzleTotal method failed! Expecting 1044, total was " + total);
-        } else if (total != 1054) {
+        } else if (!phase1 && total != 1054) {
             throw new RuntimeException("calculatePuzzleTotal method failed! Expecting 1054, total was " + total);
         }
         print("Puzzle Solution is " + Integer.toString(total));
