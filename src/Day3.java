@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.Math;
 import static ac.artPrint.print;
 
 /*
@@ -30,13 +31,39 @@ import static ac.artPrint.print;
 		Data from square 12 is carried 3 steps, such as: down, left, left.
 		Data from square 23 is carried only 2 steps: up twice.
 		Data from square 1024 must be carried 31 steps.
+
+			
+	// Your puzzle input is 265149.
+
 */
 
 class Day3 {
-	// private static int theNum;
-	// private Grid g;
+
 	
 	public static void main(String[] args) {
+		
+		// unit tests
+		
+		int dist_1 = new Grid(1).distanceToPort();
+		int dist_12 = new Grid(12).distanceToPort();
+		int dist_23 = new Grid(23).distanceToPort();
+		int dist_1024 = new Grid(1024).distanceToPort();
+
+		// print("The distance for 1 is " + Integer.toString(dist_1));
+		// print ("The distance for 12 is " + Integer.toString(dist_12));
+		// print("The distance for 23 is " + Integer.toString(dist_23));
+		// print("The distance for 1024 is " + Integer.toString(dist_1024));
+		// print("");
+		// print ("---");
+		// print ("");
+		
+		if (dist_1 != 0 ||
+			dist_12 != 3 ||
+			dist_23 != 2 ||
+			dist_1024 != 31) {		
+				throw new RuntimeException("Unit tests fail");
+		}
+		
 		
 		if (args.length <= 0) {
 			print ("Usage: 'Day3 ###'");
@@ -45,7 +72,9 @@ class Day3 {
 		int theNum = Integer.parseInt( args[0]);
 		
 		Grid g = new Grid(theNum);
-		g.draw();
+		// g.draw();
+
+		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(g.distanceToPort()));
 	}
 	
 	static class Grid {
@@ -58,18 +87,21 @@ class Day3 {
 		
 		
 		private ArrayList<Cell> cells = new ArrayList<>();
-		private int value;
+		
 		private int max_x, min_x, max_y, min_y;
 		private int curr_x, curr_y;
 		private direction currDirection;
 		
 		public Grid(int value) {
-			this.value = value;
+			makeCells(value);
+		}
+
+		private void makeCells(int value) {
 			for(int i = 1 ; i <= value ; i++) {
 				cells.add(makeCell(i));
 			}
 		}
-		
+
 		private Cell makeCell(int value) {
 			if (value == 1) {
 				initializeGrid();
@@ -121,8 +153,9 @@ class Day3 {
 			}
 		}
 
-				
-			
+		public int distanceToPort() {
+			return Math.abs(curr_x) + Math.abs(curr_y);
+		}
 		
 		
 		
@@ -132,9 +165,6 @@ class Day3 {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			for(Cell c : cells) {
-				// for(int i = 0 ; i < c.getValue() ; i++) {
-					// sb.append("-");
-				// }
 				sb.append(Integer.toString(c.getValue()) + " [" + Integer.toString(c.getX()) + "," + Integer.toString(c.getY()) + "]\n");
 			}
 			return sb.toString();
