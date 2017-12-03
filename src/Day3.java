@@ -37,6 +37,31 @@ import static ac.artPrint.print;
 
 */
 
+/*
+--- Part Two ---
+
+As a stress test on the system, the programs here clear the grid and then store the value 1 in square 1. Then, in the same allocation order as shown above, they store the sum of the values in all adjacent squares, including diagonals.
+
+So, the first few squares' values are chosen as follows:
+
+Square 1 starts with the value 1.
+Square 2 has only one adjacent filled square (with value 1), so it also stores 1.
+Square 3 has both of the above squares as neighbors and stores the sum of their values, 2.
+Square 4 has all three of the aforementioned squares as neighbors and stores the sum of their values, 4.
+Square 5 only has the first and fourth squares as neighbors, so it gets the value 5.
+Once a square is written, its value does not change. Therefore, the first few squares would receive the following values:
+
+147  142  133  122   59
+304    5    4    2   57
+330   10    1    1   54
+351   11   23   25   26
+362  747  806--->   ...
+What is the first value written that is larger than your puzzle input?
+
+Your puzzle input is still 265149.
+*/
+
+
 class Day3 {
 
 	
@@ -48,14 +73,6 @@ class Day3 {
 		int dist_12 = new Grid(12).distanceToPort();
 		int dist_23 = new Grid(23).distanceToPort();
 		int dist_1024 = new Grid(1024).distanceToPort();
-
-		// print("The distance for 1 is " + Integer.toString(dist_1));
-		// print ("The distance for 12 is " + Integer.toString(dist_12));
-		// print("The distance for 23 is " + Integer.toString(dist_23));
-		// print("The distance for 1024 is " + Integer.toString(dist_1024));
-		// print("");
-		// print ("---");
-		// print ("");
 		
 		if (dist_1 != 0 ||
 			dist_12 != 3 ||
@@ -71,10 +88,32 @@ class Day3 {
 		}
 		int theNum = Integer.parseInt( args[0]);
 		
+		print("");
+		print("PHASE ONE:");
+		
 		Grid g = new Grid(theNum);
+		int dist = g.distanceToPort();
 		// g.draw();
-
-		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(g.distanceToPort()));
+		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
+		
+		/* end of phase 1 */
+		
+		
+		print("");
+		print("PHASE TWO:");
+		
+		Grid h = gridVersionTwo(dist);
+		h.draw();
+		int maxValue = h.getMaxValue();
+		print ("The maximum value is " + Integer.toString(maxValue));
+		
+		
+	}
+	
+	static Grid gridVersionTwo(int targetMaxValue) {
+		Grid g = new Grid(1);
+		g.makeCellsToTargetValue(targetMaxValue);
+		return g;
 	}
 	
 	static class Grid {
@@ -92,11 +131,20 @@ class Day3 {
 		private int curr_x, curr_y;
 		private direction currDirection;
 		
+		public int getMaxValue() {
+			if (!cells.isEmpty()) {
+				Cell last = cells.get(cells.size() - 1);
+				return last.getValue();
+			} else {
+				throw new IndexOutOfBoundsException();
+			}
+		}
+		
 		public Grid(int value) {
 			makeCells(value);
 		}
 
-		private void makeCells(int value) {
+		private void makeCells(int value) { // phase 1
 			for(int i = 1 ; i <= value ; i++) {
 				cells.add(makeCell(i));
 			}
@@ -109,6 +157,29 @@ class Day3 {
 			} else {
 				return getNextCell(value);
 			}
+		}
+		
+		private void makeCellsToTargetValue(int target) {
+			int nextValue;
+			do {
+				setNextCoordinates();
+				nextValue = getAdjacentValues();
+				// if (nextValue <= target) {
+					cells.add( new Cell(nextValue, curr_x, curr_y) );
+				// }
+			} while (nextValue <= target);			
+		}
+		
+		private int getAdjacentValues() {
+			// for now, just read through whole list although this is not efficient.
+			int total = 0;
+			for (Cell c : cells) {
+				if (Math.abs(c.getX() - curr_x) == 1 ||
+					Math.abs(c.getY() - curr_y) == 1) {
+					total += c.getValue();
+				}
+			}
+			return total;
 		}
 		
 		private void initializeGrid() {
