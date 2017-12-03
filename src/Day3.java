@@ -1,4 +1,4 @@
-
+import java.util.*;
 import static ac.artPrint.print;
 
 /*
@@ -33,7 +33,8 @@ import static ac.artPrint.print;
 */
 
 class Day3 {
-	private static int theNum;
+	// private static int theNum;
+	// private Grid g;
 	
 	public static void main(String[] args) {
 		print("hoo ha");
@@ -41,11 +42,54 @@ class Day3 {
 			print ("Usage: 'Day3 ###'");
 			return;
 		}
-		theNum = Integer.parseInt( args[0]);
+		int theNum = Integer.parseInt( args[0]);
 		print(theNum);
+		
+		Grid g = new Grid(theNum);
+		g.draw();
+	}
+	
+	static class Grid {
+		private ArrayList<Cell> cells = new ArrayList<>();
+		private int value;
+		public Grid(int value) {
+			this.value = value;
+			for(int i = 1 ; i <= value ; i++) {
+				cells.add(new Cell(i));
+			}
+		}
+		public void draw() { 
+			print(this.toString());
+		}
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			for(Cell c : cells) {
+				for(int i = 0 ; i < c.getValue() ; i++) {
+					sb.append(" ");
+				}
+				sb.append(Integer.toString(c.getValue()) + "\n");
+			}
+			return sb.toString();
+		}
+				
+	}
+	
+	static class Cell {
+		private int value;
+		public int getValue() {
+			return value;
+		}
+		
+		private int x;
+		private int y;
+		public Cell(int value) {
+			this.value = value;
+		}
 	}
 	
 }
+
+
 
 
 
