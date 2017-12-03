@@ -11,6 +11,17 @@ public class Day1 {
 
         The list is *circular*, so the digit after the last digit is the first digit in the list.
      */
+	 
+	 /*
+		phase 2:
+		
+		Now, instead of considering the next digit, it wants you to 
+		consider the digit halfway around the circular list. 
+		That is, if your list contains 10 items, only include 
+		a digit in your sum if the digit 10/2 = 5 steps forward matches it. 
+		Fortunately, your list has an even number of elements.
+		
+	*/
 
     private static int total;
     private static Boolean phase1 = false;
@@ -60,7 +71,7 @@ public class Day1 {
 
             int current_digit = getInt(p.charAt(i));
             int next_digit = getInt(p.charAt(i + offset));
-
+			
             if (current_digit == next_digit) {
                 print(current_digit);
                 print(next_digit);
