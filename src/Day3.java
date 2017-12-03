@@ -33,7 +33,19 @@ import static ac.artPrint.print;
 */
 
 class Day3 {
-public static void main(String[] args) {
-print("hoo ha");
+	private static int theNum;
+	
+	public static void main(String[] args) {
+		print("hoo ha");
+		if (args.length <= 0) {
+			print ("Usage: 'Day3 ###'");
+			return;
+		}
+		theNum = Integer.parseInt( args[0]);
+		print(theNum);
+	}
+	
 }
-}
+
+
+
