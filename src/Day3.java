@@ -93,7 +93,7 @@ class Day3 {
 		
 		Grid g = new Grid(theNum);
 		int dist = g.distanceToPort();
-		// g.draw();
+		g.draw();
 		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
 		
 		/* end of phase 1 */
@@ -111,7 +111,7 @@ class Day3 {
 	}
 	
 	static Grid gridVersionTwo(int targetMaxValue) {
-		Grid g = new Grid(1);
+		Grid g = new Grid();
 		g.makeCellsToTargetValue(targetMaxValue);
 		return g;
 	}
@@ -141,9 +141,14 @@ class Day3 {
 		}
 		
 		public Grid(int value) {
+			initializeGrid();
 			makeCells(value);
 		}
 
+		public Grid() {
+			initializeGrid();
+		}
+		
 		private void makeCells(int value) { // phase 1
 			for(int i = 1 ; i <= value ; i++) {
 				cells.add(makeCell(i));
@@ -152,7 +157,6 @@ class Day3 {
 
 		private Cell makeCell(int value) {
 			if (value == 1) {
-				initializeGrid();
 				return new Cell(value,0,0);
 			} else {
 				return getNextCell(value);
@@ -160,6 +164,8 @@ class Day3 {
 		}
 		
 		private void makeCellsToTargetValue(int target) {
+			initializeGrid();
+			cells.add(new Cell(1,0,0));
 			int nextValue;
 			do {
 				setNextCoordinates();
@@ -172,13 +178,16 @@ class Day3 {
 		
 		private int getAdjacentValues() {
 			// for now, just read through whole list although this is not efficient.
+			
+			print ("Current: [" + Integer.toString(curr_x) + "," + Integer.toString(curr_y) + "]");
 			int total = 0;
 			for (Cell c : cells) {
-				if (Math.abs(c.getX() - curr_x) == 1 ||
-					Math.abs(c.getY() - curr_y) == 1) {
+				if (Math.abs(c.getX() - curr_x) <= 1 &&
+					Math.abs(c.getY() - curr_y) <= 1) {
 					total += c.getValue();
 				}
 			}
+			print ("Total: " + Integer.toString(total));
 			return total;
 		}
 		
