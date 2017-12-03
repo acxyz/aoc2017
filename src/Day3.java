@@ -93,7 +93,7 @@ class Day3 {
 		
 		Grid g = new Grid(theNum);
 		int dist = g.distanceToPort();
-		g.draw();
+		// g.draw();
 		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
 		
 		/* end of phase 1 */
@@ -102,7 +102,7 @@ class Day3 {
 		print("");
 		print("PHASE TWO:");
 		
-		Grid h = gridVersionTwo(dist);
+		Grid h = gridVersionTwo(theNum);
 		h.draw();
 		int maxValue = h.getMaxValue();
 		print ("The maximum value is " + Integer.toString(maxValue));
@@ -179,7 +179,7 @@ class Day3 {
 		private int getAdjacentValues() {
 			// for now, just read through whole list although this is not efficient.
 			
-			print ("Current: [" + Integer.toString(curr_x) + "," + Integer.toString(curr_y) + "]");
+			// print ("Current: [" + Integer.toString(curr_x) + "," + Integer.toString(curr_y) + "]");
 			int total = 0;
 			for (Cell c : cells) {
 				if (Math.abs(c.getX() - curr_x) <= 1 &&
@@ -187,7 +187,7 @@ class Day3 {
 					total += c.getValue();
 				}
 			}
-			print ("Total: " + Integer.toString(total));
+			// print ("Total: " + Integer.toString(total));
 			return total;
 		}
 		
