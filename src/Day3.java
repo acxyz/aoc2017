@@ -101,6 +101,27 @@ class Day3 {
 		
 		print("");
 		print("PHASE TWO:");
+		// unit tests
+		
+		int max_3 = gridVersionTwo(3).getMaxValue();
+		int max_6 = gridVersionTwo(6).getMaxValue();
+		int max_9 = gridVersionTwo(9).getMaxValue();
+		int max_24 = gridVersionTwo(24).getMaxValue();
+		int max_60 = gridVersionTwo(60).getMaxValue();
+		int max_350 = gridVersionTwo(350).getMaxValue();
+		int max_800 = gridVersionTwo(800).getMaxValue();
+		
+		
+		if (max_3 != 4 ||
+			max_6 != 10 ||
+			max_9 != 10 ||
+			max_24 != 25 ||
+			max_60 != 122 ||
+			max_350 != 351 ||
+			max_800 != 806) {		
+				throw new RuntimeException("Unit tests fail phase 2");
+		}		
+		
 		
 		Grid h = gridVersionTwo(theNum);
 		h.draw();
