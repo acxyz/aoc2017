@@ -37,37 +37,105 @@ class Day3 {
 	// private Grid g;
 	
 	public static void main(String[] args) {
-		print("hoo ha");
+		
 		if (args.length <= 0) {
 			print ("Usage: 'Day3 ###'");
 			return;
 		}
 		int theNum = Integer.parseInt( args[0]);
-		print(theNum);
 		
 		Grid g = new Grid(theNum);
 		g.draw();
 	}
 	
 	static class Grid {
+		enum direction {
+			right,
+			up,
+			left,
+			down
+		}
+		
+		
 		private ArrayList<Cell> cells = new ArrayList<>();
 		private int value;
+		private int max_x, min_x, max_y, min_y;
+		private int curr_x, curr_y;
+		private direction currDirection;
+		
 		public Grid(int value) {
 			this.value = value;
 			for(int i = 1 ; i <= value ; i++) {
-				cells.add(new Cell(i));
+				cells.add(makeCell(i));
 			}
 		}
+		
+		private Cell makeCell(int value) {
+			if (value == 1) {
+				initializeGrid();
+				return new Cell(value,0,0);
+			} else {
+				return getNextCell(value);
+			}
+		}
+		
+		private void initializeGrid() {
+			max_x = 0;
+			max_y = 0;
+			min_x = 0;
+			min_y = 0;
+			curr_x = 0;
+			curr_y = 0;
+			currDirection = direction.right;
+		}
+		
+		private Cell getNextCell(int value) {
+			setNextCoordinates();
+			return new Cell(value, curr_x, curr_y);
+		}
+		private void setNextCoordinates() {
+			if (currDirection == direction.right) {
+				curr_x++;
+				if (curr_x > max_x) {
+					max_x = curr_x;
+					currDirection = direction.up;
+				}
+			} else if (currDirection == direction.up) {
+				curr_y++;
+				if (curr_y > max_y) {
+					max_y = curr_y;
+					currDirection = direction.left;
+				}
+			} else if (currDirection == direction.left) {
+				curr_x--;
+				if (curr_x < min_x) {
+					min_x = curr_x;
+					currDirection = direction.down;
+				}
+			} else {
+				curr_y--;
+				if (curr_y < min_y) {
+					min_y = curr_y;
+					currDirection = direction.right;
+				}
+			}
+		}
+
+				
+			
+		
+		
+		
 		public void draw() { 
 			print(this.toString());
 		}
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			for(Cell c : cells) {
-				for(int i = 0 ; i < c.getValue() ; i++) {
-					sb.append(" ");
-				}
-				sb.append(Integer.toString(c.getValue()) + "\n");
+				// for(int i = 0 ; i < c.getValue() ; i++) {
+					// sb.append("-");
+				// }
+				sb.append(Integer.toString(c.getValue()) + " [" + Integer.toString(c.getX()) + "," + Integer.toString(c.getY()) + "]\n");
 			}
 			return sb.toString();
 		}
@@ -76,14 +144,23 @@ class Day3 {
 	
 	static class Cell {
 		private int value;
+		private int x;
+		private int y;
+		
 		public int getValue() {
 			return value;
 		}
+		public int getX() {
+			return x;
+		}
+		public int getY() {
+			return y;
+		}
 		
-		private int x;
-		private int y;
-		public Cell(int value) {
+		public Cell(int value, int x, int y) {
 			this.value = value;
+			this.x = x;
+			this.y = y;
 		}
 	}
 	
