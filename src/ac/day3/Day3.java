@@ -96,7 +96,7 @@ class Day3 {
 		
 		Grid g = new Grid(theNum);
 		int dist = g.distanceToPort();
-		if (g.count() <= 1000) g.draw();
+		if (g.count() <= 1500) g.draw();
 		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
 		
 		/* end of phase 1 */
@@ -106,13 +106,13 @@ class Day3 {
 		print("PHASE TWO:");
 		// unit tests
 		
-		int max_3 = gridVersionTwo(3).getMaxValue();
-		int max_6 = gridVersionTwo(6).getMaxValue();
-		int max_9 = gridVersionTwo(9).getMaxValue();
-		int max_24 = gridVersionTwo(24).getMaxValue();
-		int max_60 = gridVersionTwo(60).getMaxValue();
-		int max_350 = gridVersionTwo(350).getMaxValue();
-		int max_800 = gridVersionTwo(800).getMaxValue();
+		int max_3 = Grid.gridVersionTwo(3).getMaxValue();
+		int max_6 = Grid.gridVersionTwo(6).getMaxValue();
+		int max_9 = Grid.gridVersionTwo(9).getMaxValue();
+		int max_24 = Grid.gridVersionTwo(24).getMaxValue();
+		int max_60 = Grid.gridVersionTwo(60).getMaxValue();
+		int max_350 = Grid.gridVersionTwo(350).getMaxValue();
+		int max_800 = Grid.gridVersionTwo(800).getMaxValue();
 		
 		
 		if (max_3 != 4 ||
@@ -126,7 +126,7 @@ class Day3 {
 		}		
 		
 		
-		Grid h = gridVersionTwo(theNum);
+		Grid h = Grid.gridVersionTwo(theNum);
 		h.draw();
 		int maxValue = h.getMaxValue();
 		print ("The maximum value is " + Integer.toString(maxValue));
@@ -134,13 +134,15 @@ class Day3 {
 		
 	}
 	
-	static Grid gridVersionTwo(int targetMaxValue) {
-		Grid g = new Grid();
-		g.makeCellsToTargetValue(targetMaxValue);
-		return g;
-	}
+
 	
 	static class Grid {
+		static Grid gridVersionTwo(int targetMaxValue) {
+			Grid g = new Grid();
+			g.makeCellsToTargetValue(targetMaxValue);
+			return g;
+		}
+		
 		enum direction {
 			right,
 			up,
