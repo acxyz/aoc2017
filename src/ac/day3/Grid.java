@@ -2,7 +2,6 @@ package ac.day3;
 
 import java.util.*;
 import java.util.stream.*;
-// import java.lang.Math;
 import static ac.utility.artPrint.print;
 
 
@@ -20,7 +19,7 @@ public class Grid {
 	}
 	
 	
-	private ArrayList<Cell> cells; // = new ArrayList<>();
+	private ArrayList<Cell> cells; 
 	
 	private int max_x, min_x, max_y, min_y;
 	private int curr_x, curr_y;
@@ -28,24 +27,11 @@ public class Grid {
 	
 	private int testValue;
 	
-	
-	
 	public Grid(int value) {
 		initializeGrid();
 		testValue = value;
-		// makeCells(value);
 	}
-	
-	// static Grid gridVersionTwo(int targetMaxValue) {
-		// Grid g = new Grid();
-		// g.makeCellsToTargetValue(targetMaxValue);
-		// return g;
-	// }
-
-	// public Grid() {
-		// initializeGrid();
-	// }
-	
+		
 	private void initializeGrid() {
 		max_x = 0;
 		max_y = 0;
@@ -60,7 +46,8 @@ public class Grid {
 	public void makeCellsConsecutively() { // phase 1
 		makeCellsConsecutively(this.testValue);
 	}
-	public void makeCellsToTargetValue() {
+	
+	public void makeCellsToTargetValue() { // phase 2
 		makeCellsToTargetValue(this.testValue);
 	}
 	
