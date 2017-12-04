@@ -1,4 +1,4 @@
-package ac;
+package ac.utility;
 
 public class artPrint {
     public static void print(String string) {

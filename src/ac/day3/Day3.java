@@ -1,7 +1,9 @@
+package ac.day3;
+
 import java.util.*;
 import java.util.stream.*;
 import java.lang.Math;
-import static ac.artPrint.print;
+import static ac.utility.artPrint.print;
 
 /*
 	Advent of code 2017
