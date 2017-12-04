@@ -1,7 +1,9 @@
 package ac.day3;
 
 import java.util.*;
-
+import java.time.*;
+import java.time.temporal.Temporal;
+import java.time.temporal.ChronoUnit;
 import static ac.utility.artPrint.print;
 
 /*
@@ -72,12 +74,17 @@ class Day3 {
 			
 		runTests();
 		
+		
 		if (args.length <= 0) {
 			print ("Usage: 'Day3 ###'");
 			return;
 		}
 		
 		int theNum = Integer.parseInt(args[0]);
+		if (args.length > 1 && args[1].equals("perf")) {
+			runPerformanceTests(theNum);
+			return;
+		}
 		
 		print("");
 		print("PHASE ONE:");
@@ -100,6 +107,39 @@ class Day3 {
 		int maxValue = h.getMaxValue();
 		print ("The first value over " + Integer.toString(theNum) + " is " + Integer.toString(maxValue));	
 	}	
+	private static void runPerformanceTests(int numTests) {
+		
+		Instant startOld = Instant.now();
+		for (int i = 0 ; i < 10 ; i++) {
+			Grid og = new Grid(numTests);
+			og.setUseOldAdjacentMethod(true);
+			og.makeCellsToTargetValue();
+		}
+		
+		Instant endOld = Instant.now();
+		
+		for (int i = 0 ; i < 10 ; i++) {
+			Grid ng = new Grid(numTests);
+			ng.setUseOldAdjacentMethod(false);
+			ng.makeCellsToTargetValue();
+		}
+		
+		Instant endNew = Instant.now();
+		
+		
+		Long nsold = Duration.between(startOld, endOld).toNanos();
+		Long nsnew = Duration.between(endOld, endNew).toNanos();
+
+
+		Long msold = ChronoUnit.MILLIS.between(startOld, endOld);
+		Long msnew = ChronoUnit.MILLIS.between(endOld, endNew);
+		
+		print ("Old: " + Long.toString(nsold));
+		print ("Old: " + Long.toString(msold));
+		print ("New: " + Long.toString(nsnew));
+		print ("New: " + Long.toString(msnew));
+		
+	}
 		
 	private static void runTests() {
 		loadTestCases();

@@ -9,7 +9,10 @@ import static ac.utility.artPrint.print;
 
 public class Grid {
 	
-
+	Boolean useOldAdjacentMethod = true;
+	public void setUseOldAdjacentMethod(Boolean value) {
+		useOldAdjacentMethod = value;
+	}
 	
 	enum direction {
 		right,
@@ -93,13 +96,35 @@ public class Grid {
 	
 	private int getAdjacentValues() {
 		// for now, just read through whole list although this is not efficient.
+		
 		int total = 0;
-		for (Cell c : cells) {
-			if (Math.abs(c.getX() - curr_x) <= 1 &&
-				Math.abs(c.getY() - curr_y) <= 1) {
-				total += c.getValue();
+		
+		if (useOldAdjacentMethod) {
+			for (Cell c : cells) {
+				if (Math.abs(c.getX() - curr_x) <= 1 &&
+					Math.abs(c.getY() - curr_y) <= 1) {
+					total += c.getValue();
+				}
 			}
+		} else {
+			throw new RuntimeException("Method not implemented");
+			// NB: this method turned out to be about half as efficient as the method above!
+			// never assume!
+			// for (int i = curr_x -1 ; i <= curr_x + 1 ; i++) {
+				// for (int j = curr_y -1 ; j <= curr_y + 1 ; j++) {
+					// if (i == curr_x && j == curr_y) {
+					// } else {
+						// Cell c = get(i,j);
+						// if (c != null) {
+							// total += c.getValue();
+						// } else {
+							// // print ("null");
+						// }
+					// }
+				// }
+			// }
 		}
+			
 		return total;
 	}
 	
