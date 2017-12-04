@@ -279,10 +279,12 @@ class Day3 {
 			for (int j = max_y ; j >= min_y ; j--) {
 				for (int i = min_x ; i <= max_x ; i ++) {
 					Cell c = get(i,j);
-					if (c == null) {
-						sb.append("        ");
+					if (c == null) { 
+						for (int k = 0 ; k <= this.numDigits() ; k++) {
+							sb.append(" ");
+						}
 					} else {
-						sb.append(c.toString() + " ");
+						sb.append(c.toString(this.numDigits()) + " ");
 					}
 				}
 				sb.append("\n");
@@ -301,7 +303,10 @@ class Day3 {
 		public int count() {
 			return cells.size();
 		}
-				
+		public int numDigits() {
+			return Integer.toString(this.getMaxValue()).length();
+		}
+			
 	}
 	
 	static class Cell {
@@ -312,8 +317,8 @@ class Day3 {
 		public int getValue() {
 			return value;
 		}
-		public String toString() {
-			return String.format("%7s",Integer.toString(this.value));
+		public String toString(int numDigits) {
+			return String.format("%" + Integer.toString(numDigits) + "s",Integer.toString(this.value));
 		}
 		public int getX() {
 			return x;
