@@ -9,11 +9,8 @@ import static ac.utility.artPrint.print;
 
 
 public class Grid {
-	static Grid gridVersionTwo(int targetMaxValue) {
-		Grid g = new Grid();
-		g.makeCellsToTargetValue(targetMaxValue);
-		return g;
-	}
+	
+
 	
 	enum direction {
 		right,
@@ -41,6 +38,12 @@ public class Grid {
 	public Grid(int value) {
 		initializeGrid();
 		makeCells(value);
+	}
+	
+	static Grid gridVersionTwo(int targetMaxValue) {
+		Grid g = new Grid();
+		g.makeCellsToTargetValue(targetMaxValue);
+		return g;
 	}
 
 	public Grid() {

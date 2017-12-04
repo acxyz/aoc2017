@@ -1,5 +1,7 @@
 package ac.day3;
 
+import java.util.*;
+
 import static ac.utility.artPrint.print;
 
 /*
@@ -64,28 +66,18 @@ Your puzzle input is still 265149.
 
 class Day3 {
 	
+	private static ArrayList<TestCase> tests = new ArrayList<>();
+	
 	public static void main(String[] args) {
-		
-		// unit tests
-		
-		int dist_1 = new Grid(1).distanceToPort();
-		int dist_12 = new Grid(12).distanceToPort();
-		int dist_23 = new Grid(23).distanceToPort();
-		int dist_1024 = new Grid(1024).distanceToPort();
-		
-		if (dist_1 != 0 ||
-			dist_12 != 3 ||
-			dist_23 != 2 ||
-			dist_1024 != 31) {		
-				throw new RuntimeException("Unit tests fail");
-		}
-		
+			
+		runTests();
 		
 		if (args.length <= 0) {
 			print ("Usage: 'Day3 ###'");
 			return;
 		}
-		int theNum = Integer.parseInt( args[0]);
+		
+		int theNum = Integer.parseInt(args[0]);
 		
 		print("");
 		print("PHASE ONE:");
@@ -99,34 +91,43 @@ class Day3 {
 		
 		
 		print("");
-		print("PHASE TWO:");
-		// unit tests
-		
-		int max_3 = Grid.gridVersionTwo(3).getMaxValue();
-		int max_6 = Grid.gridVersionTwo(6).getMaxValue();
-		int max_9 = Grid.gridVersionTwo(9).getMaxValue();
-		int max_24 = Grid.gridVersionTwo(24).getMaxValue();
-		int max_60 = Grid.gridVersionTwo(60).getMaxValue();
-		int max_350 = Grid.gridVersionTwo(350).getMaxValue();
-		int max_800 = Grid.gridVersionTwo(800).getMaxValue();
-		
-		
-		if (max_3 != 4 ||
-			max_6 != 10 ||
-			max_9 != 10 ||
-			max_24 != 25 ||
-			max_60 != 122 ||
-			max_350 != 351 ||
-			max_800 != 806) {		
-				throw new RuntimeException("Unit tests fail phase 2");
-		}		
-		
+		print("PHASE TWO:");	
 		
 		Grid h = Grid.gridVersionTwo(theNum);
 		h.draw();
 		int maxValue = h.getMaxValue();
-		print ("The maximum value is " + Integer.toString(maxValue));	
+		print ("The first value over " + Integer.toString(theNum) + " is " + Integer.toString(maxValue));	
 	}	
+		
+	private static void runTests() {
+		loadTestCases();
+		checkTestCases();
+	}
+	private static void loadTestCases() {
+		tests.add(new TestCase(1,0,2));
+		tests.add(new TestCase(12,3,23));
+		tests.add(new TestCase(23,2,25));
+		tests.add(new TestCase(1024,31,1968));
+		tests.add(new TestCase(3,2,4));
+		tests.add(new TestCase(6,1,10));
+		tests.add(new TestCase(9,2,10));
+		tests.add(new TestCase(24,3,25));		
+		tests.add(new TestCase(265149,438,266330));
+		tests.add(new TestCase(60,5,122));
+		tests.add(new TestCase(350,11,351));
+		tests.add(new TestCase(800,15,806));
+	}
+	private static void checkTestCases() {
+		for (TestCase tc : tests) {
+			int result1 = new Grid(tc.getInputValue()).distanceToPort();
+			if (result1 != tc.getP1()) {
+				throw new RuntimeException("Hoo Nit tests fail");
+			}
+			if (Grid.gridVersionTwo(tc.getInputValue()).getMaxValue() != tc.getP2()) {
+				throw new RuntimeException("Hoo Nit Too");
+			}
+		}
+	}
 }
 
 
