@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 import java.lang.Math;
 import static ac.artPrint.print;
 
@@ -93,7 +94,7 @@ class Day3 {
 		
 		Grid g = new Grid(theNum);
 		int dist = g.distanceToPort();
-		// g.draw();
+		if (g.count() <= 1000) g.draw();
 		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
 		
 		/* end of phase 1 */
@@ -258,17 +259,47 @@ class Day3 {
 			return Math.abs(curr_x) + Math.abs(curr_y);
 		}
 		
-		
+		private Cell get(int x, int y) {
+			//  List<User> olderUsers = users.stream().filter(u -> u.age > 30).collect(Collectors.toList());
+			 List<Cell> filteredCells = cells.stream().filter(c -> c.getY() == y && c.getX()	 == x).collect(Collectors.toList());
+			if (filteredCells.size() > 1) {
+				throw new RuntimeException("Invalid grid: duplicate cell coordinates");
+			} else if (filteredCells.size() < 1) {
+				return null;
+			} else {
+				return filteredCells.get(0);
+			}
+		}
 		
 		public void draw() { 
 			print(this.toString());
 		}
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			for(Cell c : cells) {
-				sb.append(Integer.toString(c.getValue()) + " [" + Integer.toString(c.getX()) + "," + Integer.toString(c.getY()) + "]\n");
+			for (int j = max_y ; j >= min_y ; j--) {
+				for (int i = min_x ; i <= max_x ; i ++) {
+					Cell c = get(i,j);
+					if (c == null) {
+						sb.append("        ");
+					} else {
+						sb.append(c.toString() + " ");
+					}
+				}
+				sb.append("\n");
 			}
+			
+			// sb.append("\n");
+			// sb.append(" * * * ");			
+			// sb.append("\n");
+			
+			// for(Cell c : cells) {
+				// sb.append(Integer.toString(c.getValue()) + " [" + Integer.toString(c.getX()) + "," + Integer.toString(c.getY()) + "]\n");
+			// }
 			return sb.toString();
+		}
+		
+		public int count() {
+			return cells.size();
 		}
 				
 	}
@@ -280,6 +311,9 @@ class Day3 {
 		
 		public int getValue() {
 			return value;
+		}
+		public String toString() {
+			return String.format("%7s",Integer.toString(this.value));
 		}
 		public int getX() {
 			return x;
