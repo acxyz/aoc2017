@@ -43,6 +43,8 @@ public class Grid {
 		cells = new ArrayList<>();
 	}
 	
+	/* METHODS TO POPULATE GRID */
+	
 	public void makeCellsConsecutively() { // phase 1
 		makeCellsConsecutively(this.testValue);
 	}
@@ -101,9 +103,6 @@ public class Grid {
 		return total;
 	}
 	
-
-	
-
 	private void setNextCoordinates() {
 		if (currDirection == direction.right) {
 			curr_x++;
@@ -131,16 +130,24 @@ public class Grid {
 			}
 		}
 	}
+	
+	/* END OF METHODS TO POPULATE GRID */
+	
+	
+	
+
+
 
 	/* 
 		RETURN VALUE FUNCTIONS
 	*/
 	
-	public int distanceToPort() {
+	public int distanceToPort() { // PHASE 1
 		return Math.abs(curr_x) + Math.abs(curr_y);
 	}
 	
-	public int getMaxValue() {
+	public int getMaxValue() { // PHASE 2 and other uses
+		// assumes that each cell is >= the previous
 		if (!cells.isEmpty()) {
 			Cell last = cells.get(cells.size() - 1);
 			return last.getValue();
@@ -149,18 +156,7 @@ public class Grid {
 		}
 	}
 	
-	private Cell get(int x, int y) {
 
-		List<Cell> filteredCells = cells.stream().filter(c -> c.getY() == y && c.getX()	 == x).collect(Collectors.toList());
-		
-		if (filteredCells.size() > 1) {
-			throw new RuntimeException("Invalid grid: duplicate cell coordinates");
-		} else if (filteredCells.size() < 1) {
-			return null;
-		} else {
-			return filteredCells.get(0);
-		}
-	}
 	
 	/*
 		DRAW FUNCTIONS
@@ -200,8 +196,21 @@ public class Grid {
 	public int count() {
 		return cells.size();
 	}
-	public int numDigits() {
+	public int numDigits() { // size of largest (last) member
 		return Integer.toString(this.getMaxValue()).length();
+	}
+	
+	private Cell get(int x, int y) {
+
+		List<Cell> filteredCells = cells.stream().filter(c -> c.getY() == y && c.getX()	 == x).collect(Collectors.toList());
+		
+		if (filteredCells.size() > 1) {
+			throw new RuntimeException("Invalid grid: duplicate cell coordinates");
+		} else if (filteredCells.size() < 1) {
+			return null;
+		} else {
+			return filteredCells.get(0);
+		}
 	}
 		
 }
