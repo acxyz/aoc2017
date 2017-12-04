@@ -20,77 +20,31 @@ public class Grid {
 	}
 	
 	
-	private ArrayList<Cell> cells = new ArrayList<>();
+	private ArrayList<Cell> cells; // = new ArrayList<>();
 	
 	private int max_x, min_x, max_y, min_y;
 	private int curr_x, curr_y;
 	private direction currDirection;
 	
-	public int getMaxValue() {
-		if (!cells.isEmpty()) {
-			Cell last = cells.get(cells.size() - 1);
-			return last.getValue();
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
-	}
+	private int testValue;
+	
+	
 	
 	public Grid(int value) {
 		initializeGrid();
-		makeCells(value);
+		testValue = value;
+		// makeCells(value);
 	}
 	
-	static Grid gridVersionTwo(int targetMaxValue) {
-		Grid g = new Grid();
-		g.makeCellsToTargetValue(targetMaxValue);
-		return g;
-	}
+	// static Grid gridVersionTwo(int targetMaxValue) {
+		// Grid g = new Grid();
+		// g.makeCellsToTargetValue(targetMaxValue);
+		// return g;
+	// }
 
-	public Grid() {
-		initializeGrid();
-	}
-	
-	private void makeCells(int value) { // phase 1
-		for(int i = 1 ; i <= value ; i++) {
-			cells.add(makeCell(i));
-		}
-	}
-
-	private Cell makeCell(int value) {
-		if (value == 1) {
-			return new Cell(value,0,0);
-		} else {
-			return getNextCell(value);
-		}
-	}
-	
-	private void makeCellsToTargetValue(int target) {
-		initializeGrid();
-		cells.add(new Cell(1,0,0));
-		int nextValue;
-		do {
-			setNextCoordinates();
-			nextValue = getAdjacentValues();
-			// if (nextValue <= target) {
-				cells.add( new Cell(nextValue, curr_x, curr_y) );
-			// }
-		} while (nextValue <= target);			
-	}
-	
-	private int getAdjacentValues() {
-		// for now, just read through whole list although this is not efficient.
-		
-		// print ("Current: [" + Integer.toString(curr_x) + "," + Integer.toString(curr_y) + "]");
-		int total = 0;
-		for (Cell c : cells) {
-			if (Math.abs(c.getX() - curr_x) <= 1 &&
-				Math.abs(c.getY() - curr_y) <= 1) {
-				total += c.getValue();
-			}
-		}
-		// print ("Total: " + Integer.toString(total));
-		return total;
-	}
+	// public Grid() {
+		// initializeGrid();
+	// }
 	
 	private void initializeGrid() {
 		max_x = 0;
@@ -100,12 +54,69 @@ public class Grid {
 		curr_x = 0;
 		curr_y = 0;
 		currDirection = direction.right;
+		cells = new ArrayList<>();
 	}
 	
-	private Cell getNextCell(int value) {
-		setNextCoordinates();
-		return new Cell(value, curr_x, curr_y);
+	public void makeCellsConsecutively() { // phase 1
+		makeCellsConsecutively(this.testValue);
 	}
+	public void makeCellsToTargetValue() {
+		makeCellsToTargetValue(this.testValue);
+	}
+	
+	/* PHASE 1 */
+	
+	private void makeCellsConsecutively(int value) { // phase 1
+		initializeGrid();
+		addInitialCell(1);
+		for(int i = 2 ; i <= value ; i++) {
+			addCellAtNextLocation(i);
+		}
+	}
+
+
+
+	/* PHASE 2 */
+	
+	private void makeCellsToTargetValue(int target) {
+		initializeGrid();
+		addInitialCell(1);
+		int nextValue = 1;
+		while (nextValue <= target) {
+			setNextCoordinates();
+			nextValue = getAdjacentValues();
+			addCellAtCurrentLocation(nextValue);
+		} 			
+	}
+	
+	private void addCellAtNextLocation(int v) {
+		setNextCoordinates();
+		addCellAtCurrentLocation(v);
+	}
+	
+	private void addCellAtCurrentLocation(int v) {
+		cells.add(new Cell(v, curr_x, curr_y));
+	}
+	
+	private void addInitialCell(int v) {
+		cells.add(new Cell(v,0,0));
+	}
+	
+	private int getAdjacentValues() {
+		// for now, just read through whole list although this is not efficient.
+		int total = 0;
+		for (Cell c : cells) {
+			if (Math.abs(c.getX() - curr_x) <= 1 &&
+				Math.abs(c.getY() - curr_y) <= 1) {
+				total += c.getValue();
+			}
+		}
+		return total;
+	}
+	
+
+	
+
 	private void setNextCoordinates() {
 		if (currDirection == direction.right) {
 			curr_x++;
@@ -134,13 +145,27 @@ public class Grid {
 		}
 	}
 
+	/* 
+		RETURN VALUE FUNCTIONS
+	*/
+	
 	public int distanceToPort() {
 		return Math.abs(curr_x) + Math.abs(curr_y);
 	}
 	
+	public int getMaxValue() {
+		if (!cells.isEmpty()) {
+			Cell last = cells.get(cells.size() - 1);
+			return last.getValue();
+		} else {
+			throw new IndexOutOfBoundsException();
+		}
+	}
+	
 	private Cell get(int x, int y) {
-		//  List<User> olderUsers = users.stream().filter(u -> u.age > 30).collect(Collectors.toList());
-		 List<Cell> filteredCells = cells.stream().filter(c -> c.getY() == y && c.getX()	 == x).collect(Collectors.toList());
+
+		List<Cell> filteredCells = cells.stream().filter(c -> c.getY() == y && c.getX()	 == x).collect(Collectors.toList());
+		
 		if (filteredCells.size() > 1) {
 			throw new RuntimeException("Invalid grid: duplicate cell coordinates");
 		} else if (filteredCells.size() < 1) {
@@ -150,6 +175,9 @@ public class Grid {
 		}
 	}
 	
+	/*
+		DRAW FUNCTIONS
+	*/
 	public void draw() { 
 		print(this.toString());
 	}
@@ -179,6 +207,9 @@ public class Grid {
 		return sb.toString();
 	}
 	
+	/*
+		MISC FUNCTIONS
+	*/
 	public int count() {
 		return cells.size();
 	}

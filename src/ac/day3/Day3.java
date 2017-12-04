@@ -83,6 +83,7 @@ class Day3 {
 		print("PHASE ONE:");
 		
 		Grid g = new Grid(theNum);
+		g.makeCellsConsecutively();
 		int dist = g.distanceToPort();
 		if (g.count() <= 1500) g.draw();
 		print ("The distance for " + Integer.toString(theNum) + " is " + Integer.toString(dist));
@@ -93,7 +94,8 @@ class Day3 {
 		print("");
 		print("PHASE TWO:");	
 		
-		Grid h = Grid.gridVersionTwo(theNum);
+		Grid h = g; //Grid.gridVersionTwo(theNum);
+		h.makeCellsToTargetValue();
 		h.draw();
 		int maxValue = h.getMaxValue();
 		print ("The first value over " + Integer.toString(theNum) + " is " + Integer.toString(maxValue));	
@@ -118,12 +120,17 @@ class Day3 {
 		tests.add(new TestCase(800,15,806));
 	}
 	private static void checkTestCases() {
+		int result1, result2;
 		for (TestCase tc : tests) {
-			int result1 = new Grid(tc.getInputValue()).distanceToPort();
+			Grid g = new Grid(tc.getInputValue());
+			g.makeCellsConsecutively();
+			result1 = g.distanceToPort();
+			g.makeCellsToTargetValue();
+			result2 = g.getMaxValue();
 			if (result1 != tc.getP1()) {
 				throw new RuntimeException("Hoo Nit tests fail");
 			}
-			if (Grid.gridVersionTwo(tc.getInputValue()).getMaxValue() != tc.getP2()) {
+			if (result2 != tc.getP2()) {
 				throw new RuntimeException("Hoo Nit Too");
 			}
 		}
