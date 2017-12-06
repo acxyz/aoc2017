@@ -1,3 +1,5 @@
+# from sets import Set
+
 source = "0	5	10	0	11	14	13	4	11	8	8	7	1	4	12	11"
 # test dupe:
 # source = "0	5	14	0	11	14	13	4	11	8	8	7	1	4	12	11"
@@ -28,9 +30,31 @@ def redistributeMemory(banks):
 		banks[curr_index] += 1
 		num_to_distribute -= 1
 
-redistributeMemory(banks)
-print(banks)
+states = set()
+states.add(tuple(banks))
+foo = tuple(banks)
 
-redistributeMemory(banks)
-print(banks)
-		
+iterations = 0
+
+while (True):
+	print ("Size is " + str(len(states)))
+	redistributeMemory(banks)
+	iterations += 1
+	print (banks)
+	if tuple(banks) in states:
+		break
+	
+	states.add(tuple(banks))
+	
+
+print (str(iterations) + " iterations")
+	
+# print (foo in states)
+# print(banks)
+# states.add(tuple(banks))
+# print ("Size is " + str(len(states)))
+# redistributeMemory(banks)
+# print(banks)
+# states.add(tuple(banks))
+# print ("Size is " + str(len(states)))
+# print (foo in states)
