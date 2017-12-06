@@ -30,11 +30,14 @@ def redistributeMemory(banks):
 		banks[curr_index] += 1
 		num_to_distribute -= 1
 
-states = set()
-states.add(tuple(banks))
-foo = tuple(banks)
 
 iterations = 0
+
+states = set()
+statesDict = {} # phase 2
+states.add(tuple(banks))
+statesDict[tuple(banks)] = iterations
+
 
 while (True):
 	print ("Size is " + str(len(states)))
@@ -45,10 +48,11 @@ while (True):
 		break
 	
 	states.add(tuple(banks))
+	statesDict[tuple(banks)] = iterations
 	
 
 print (str(iterations) + " iterations")
-	
+print (str(iterations - statesDict[tuple(banks)]) + " cycles since duple first appeared"	)
 # print (foo in states)
 # print(banks)
 # states.add(tuple(banks))
