@@ -1,5 +1,17 @@
 import re
 
+class disc:
+	children = []
+	parent = None
+	weight = 0
+	name = ""
+	
+	def __init__(self, name, weight):
+		self.name = name
+		self.weight = weight
+		
+discs = {}	
+
 
 
 f = open('Day7input.txt','r')
@@ -22,16 +34,37 @@ for line in lines:
 	if matches:
 		name = matches.group('name')
 		weight = matches.group('weight')
-		print (" - " + name + " [" + weight + "]")
+		d = disc(name, weight)
+		# print (" - " + name + " [" + weight + "]")
 		
 		branches = matches.group('branches')
 		if branches:
 			
+			
 			l = rgx_branches.findall(branches)
 			
 			for branch in l: 
-				print(" -- " + branch)
-				
+				# print(" -- " + branch)
+				d.children.append(branch)
+	
+		discs[name] = d
+	
 	else:
 		print ("nomatch")
 			
+
+# print (discs)
+
+for disc_name, disc in discs.items(): 
+	for c in disc.children:
+		discs[c].parent = disc	
+
+for disc_name, disc in discs.items():
+	if disc.parent == None:
+		print("ultimate parent is " + disc.name)
+		
+
+		
+		
+		
+
