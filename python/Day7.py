@@ -1,69 +1,61 @@
 import re
 import sys
 
-class disc:
+class discc:
 	
 	def __init__(self, name, weight):
 		self.name = name
 		self.weight = weight
 		self.children = []
 		self.parent = None
-		
-discs = {}	
 
-file_name = sys.argv[1]
+def getDiscsFromFile(file_name):
 
-print(file_name)
 
-f = open(file_name,'r')
-message = f.read()
-f.close()
-
-lines = message.split("\n")
-
-# okseah (78)
-# ebmcu (30) -> glsrg, ckhip, rqhhyc, jjvxxtt, rdnpoms
-# wuybunc (54)
-
-# use named group:
-rgx_line = re.compile(r"^(?P<name>\w+) \((?P<weight>\d+)\)( ->(?P<branches>( \w+\,?)+))?" )
-rgx_branches = re.compile(r"\w+")
-
-for line in lines:
-
-	matches = rgx_line.match(line)
-
-	if matches:
-		name = matches.group('name')
-		weight = int(matches.group('weight'))
-		d = disc(name, weight)
-		
-		branches = matches.group('branches')
-
-		if branches:
-			l = rgx_branches.findall(branches)
 			
-			for branch in l: 
-				d.children.append(branch)
+	f = open(inputFile,'r')
+	message = f.read()
+	f.close()
 
-		discs[name] = d
+	lines = message.split("\n")
+
+	# okseah (78)
+	# ebmcu (30) -> glsrg, ckhip, rqhhyc, jjvxxtt, rdnpoms
+	# wuybunc (54)
+
+	# use named group:
+	rgx_line = re.compile(r"^(?P<name>\w+) \((?P<weight>\d+)\)( ->(?P<branches>( \w+\,?)+))?" )
+	rgx_branches = re.compile(r"\w+")
+
+	for line in lines:
+
+		matches = rgx_line.match(line)
+
+		if matches:
+			name = matches.group('name')
+			weight = int(matches.group('weight'))
+			d = discc(name, weight)
+			
+			branches = matches.group('branches')
+
+			if branches:
+				l = rgx_branches.findall(branches)
+				
+				for branch in l: 
+					d.children.append(branch)
+
+			discs[name] = d
+		
+		else:
+			print ("nomatch")
+				
+
+
+	for disc_name, disc in discs.items(): 
+		for c in disc.children:
+			discs[c].parent = disc_name	
+	return discs
 	
-	else:
-		print ("nomatch")
-			
-
-
-for disc_name, disc in discs.items(): 
-	for c in disc.children:
-		discs[c].parent = disc_name	
-
-# solve part 1:		
-for disc_name, disc in discs.items():
-	if disc.parent == None:
-		ult_parent = disc
-		print("ultimate parent is " + disc.name)
-
-
 def printWithKids(disc, indent):
 	
 	for i in range(indent):
@@ -73,10 +65,6 @@ def printWithKids(disc, indent):
 	
 	for c in disc.children:
 		printWithKids(discs[c], indent + 1)
-
-
-printWithKids(ult_parent,0)		
-	
 		
 def calcWeight(disc):
 
@@ -88,7 +76,6 @@ def calcWeight(disc):
 
 	return tot_weight
 
-	
 def findBad(disc):
 	weights = {}		
 	
@@ -135,7 +122,23 @@ def crawlTree(disc):
 		print (" the proper weight is " + str(disc.weight - disc.excessWeight))
 	else:
 		crawlTree(bd)
-		
+
+
+discs = {}	
+
+inputFile = sys.argv[1]
+
+print(inputFile)
+
+discs = getDiscsFromFile(inputFile)	
+			
+# solve part 1:		
+for disc_name, disc in discs.items():
+	if disc.parent == None:
+		ult_parent = disc
+		print("ultimate parent is " + disc.name)
+
+printWithKids(ult_parent,0)				
 crawlTree (ult_parent)
 
 	
