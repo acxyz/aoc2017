@@ -1,7 +1,7 @@
 import re
 import sys
 
-class discc:
+class Disc:
 	
 	def __init__(self, name, weight):
 		self.name = name
@@ -34,7 +34,7 @@ def getDiscsFromFile(file_name):
 		if matches:
 			name = matches.group('name')
 			weight = int(matches.group('weight'))
-			d = discc(name, weight)
+			d = Disc(name, weight)
 			
 			branches = matches.group('branches')
 
@@ -122,7 +122,6 @@ def crawlTree(disc):
 		print (" the proper weight is " + str(disc.weight - disc.excessWeight))
 	else:
 		crawlTree(bd)
-
 
 discs = {}	
 
