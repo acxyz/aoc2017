@@ -47,18 +47,25 @@ for i in list:
 print("")
 current_position = 0
 skip_size = 0
+
+print("-----------------------------------------")
+
 for i in input_sequence:
+	print ("")
 	print(i)
+	print (str(skip_size) + " is skip size")
+	
 	
 	list = reverse(list, current_position, i)
 	
-	j = i + skip_size
+	j = i + current_position + skip_size
 	
 	skip_size += 1
 	if j > len(list) - 1:
 		j -= len(list)
 	
 	current_position = j
+	print (str(current_position) + " is curr pos")
 	
 
 	
