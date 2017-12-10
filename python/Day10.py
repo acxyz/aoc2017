@@ -69,17 +69,29 @@ print("-----------------------------------------")
 
 list_length = 5
 input_sequence = [3, 4, 1, 5]
-list = getTransformedList(list_length, input_sequence)
+lyst = getTransformedList(list_length, input_sequence)
 	
-print("Check: " + str( list[0] * list[1])	)
+print("Check: " + str( lyst[0] * lyst[1])	)
 
 print("-----------------------------------------")
 
+def encAscii(str):
+	for code in str.encode('ascii'):
+		print(code)
+	return list(str.encode('ascii')) + [17, 31, 73, 47, 23]
+
+
 list_length = 256
-input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
-list = getTransformedList(list_length, input_sequence)
+# input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
+# lyst = getTransformedList(list_length, input_sequence)
 	
-print("Check: " + str( list[0] * list[1])	)
+# print("Check: " + str( lyst[0] * lyst[1])	)
+
+input_string = "1,2,3"
+
+input_sequence = encAscii(input_string)
+
+print(input_sequence)
 
 
 # --- Day 10: Knot Hash ---
