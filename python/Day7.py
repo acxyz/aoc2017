@@ -10,9 +10,7 @@ class Disc:
 		self.parent = None
 
 def getDiscsFromFile(file_name):
-
-
-			
+		
 	f = open(inputFile,'r')
 	message = f.read()
 	f.close()
@@ -49,8 +47,6 @@ def getDiscsFromFile(file_name):
 		else:
 			print ("nomatch")
 				
-
-
 	for disc_name, disc in discs.items(): 
 		for c in disc.children:
 			discs[c].parent = disc_name	
@@ -71,7 +67,6 @@ def calcWeight(disc):
 	tot_weight = disc.weight
 
 	for kid in disc.children:
-		kid_disc = discs[kid]
 		tot_weight += calcWeight(discs[kid])
 
 	return tot_weight
