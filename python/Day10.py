@@ -1,5 +1,6 @@
 import sys
 
+
 def inititalizeList(length):
 	list = []
 	for i in range (length):
@@ -8,7 +9,7 @@ def inititalizeList(length):
 
 
 def getList(list, curr_pos, size):
-	print(list)
+	# print(list)
 	rev_list = []
 	cp = curr_pos
 	for i in range(size):
@@ -16,7 +17,7 @@ def getList(list, curr_pos, size):
 			cp -= len(list)
 		rev_list.append(list[cp])
 		cp += 1
-	print (rev_list)
+	# print (rev_list)
 	return rev_list
 	
 def putList(list, curr_pos, repl_list):
@@ -31,17 +32,16 @@ def putList(list, curr_pos, repl_list):
 	
 def reverse(list, curr_pos, size):
 	rev_list = getList(list, curr_pos, size)
-	print(rev_list)
+	# print(rev_list)
 	rev_list.reverse()
-	print(rev_list)
+	# print(rev_list)
 	list = putList(list, curr_pos, rev_list)
-	print (list)
+	# print (list)
 	return list
 	
-def getTransformedList(list_length, input_sequence):
+def getTransformedList(list_length, input_sequence, current_position, skip_size):
 	list = inititalizeList(list_length)
-	current_position = 0
-	skip_size = 0
+	 
 
 	# for i in list:
 		# print(i)
@@ -55,13 +55,18 @@ def getTransformedList(list_length, input_sequence):
 		
 		j = i + current_position + skip_size
 		
-		skip_size += 1
-		if j > len(list) - 1:
+		while j > len(list) - 1:
 			j -= len(list)
 		
 		current_position = j
+		skip_size += 1
+		if skip_size == len(list):
+			skip_size = 0
+
+			
 		print (str(current_position) + " is curr pos")
-	return list
+	return (list, current_position, skip_size)
+
 	
 print("")
 
@@ -69,30 +74,97 @@ print("-----------------------------------------")
 
 list_length = 5
 input_sequence = [3, 4, 1, 5]
-lyst = getTransformedList(list_length, input_sequence)
+(lyst, cp, ss) = getTransformedList(list_length, input_sequence, 0, 0)
 	
 print("Check: " + str( lyst[0] * lyst[1])	)
 
 print("-----------------------------------------")
 
-def encAscii(str):
-	for code in str.encode('ascii'):
-		print(code)
+
+
+# list_length = 256
+# input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
+# (lyst, cp, ss) = getTransformedList(list_length, input_sequence, 0, 0)
+# print("check: " + str( lyst[0] * lyst[1])	)
+# print("-----------------------------------------")
+
+# sys.exit()
+
+
+
+def asciify(str):
+	# for code in str.encode('ascii'):
+		# print(code)
 	return list(str.encode('ascii')) + [17, 31, 73, 47, 23]
 
-
-list_length = 256
-# input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
-# lyst = getTransformedList(list_length, input_sequence)
+def densify(list):
+	print(list)
+	total = 0
+	start = 0
+	result_list = []
+	while start < len(list):
+		result = 0
+		for i in range (16):
+			if start + i < len(list):
+				result ^= list[start + i]
+				print(list[start+i])
+				print(result)
+		result_list.append(result)
+		print(result_list)
+		start += 16
+	return result_list
 	
-# print("Check: " + str( lyst[0] * lyst[1])	)
-
+def hexify(list):
+	result = ""
+	for x in list:
+		# result += hex(x)[2:4]
+		hexx = format(x,'x')
+		if len(hexx) == 1:
+			hexx = '0' + hexx
+		result += hexx
+	return result
+	
+test_list = [64, 7, 255]
+result_string = hexify(test_list)
+print("Hexify: " + result_string)
+if result_string != '4007ff':
+	print ("Error in hexify function")
+	sys.exit()
+	
+	
+test_list = [65 , 27 , 9 , 1 , 4 , 3 , 40 , 50 , 91 , 7 , 6 , 0 , 2 , 5 , 68 , 22]	
+test_result = densify(test_list)
+if test_result != [64]:
+	print ("Error in densify function")
+	sys.exit()			
+else:
+	print("Densify: " + str(test_result))
+	
 input_string = "1,2,3"
+test_result = asciify(input_string)
+if test_result != [49,44,50,44,51,17,31,73,47,23]:
+	print ("Error in asciify function")
+	sys.exit()
+else:
+	print(test_result)
 
-input_sequence = encAscii(input_string)
+def hexifyString(input_string):
+	list_length = 256
+	input_sequence = asciify(input_string)
 
-print(input_sequence)
+	print(input_sequence)
 
+	cp = 0
+	ss = 0
+
+	for i in range (63):
+		(input_sequence, cp, ss) = getTransformedList(list_length, input_sequence, cp, ss)
+
+	dense_hash = densify(input_sequence)
+	hex_string = hexify(dense_hash)
+	return hex_string
+	
+print(hexifyString(""))
 
 # --- Day 10: Knot Hash ---
 
