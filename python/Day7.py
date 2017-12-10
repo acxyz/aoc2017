@@ -71,7 +71,13 @@ def calcWeight(disc):
 
 	return tot_weight
 
-def findBad(disc):
+def findBadChild(disc):
+
+	# key = weight / value = list of children who weigh that much
+	# off-balance child will be the one in a list of one. 
+	# I guess there must always be more than one "correct" disc or this won't work
+	# That seems to be the case in the puzzle, but must it be? Maybe it could be
+	# inferred from the siblings of this disc? 
 	weights = {}		
 	
 	# weigh each child
@@ -104,12 +110,9 @@ def findBad(disc):
 		badDisc.excessWeight = badWeight - goodWeight
 	return (badDisc)
 	
-	
-	# if here, there are no unbalanced discs on top of this one.
-	return None
 			
 def crawlTree(disc):
-	bd = findBad(disc)
+	bd = findBadChild(disc)
 	if (bd == None):
 		# this is the bad disc
 		print (disc.name)
