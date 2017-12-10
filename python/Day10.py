@@ -1,8 +1,9 @@
+def inititalizeList(length):
+	list = []
+	for i in range (length):
+		list.append(i)
+	return list
 
-list_length = 5
-input_sequence = [3, 4, 1, 5]
-
-list = []
 
 def getList(list, curr_pos, size):
 	print(list)
@@ -38,17 +39,23 @@ def reverse(list, curr_pos, size):
 	return list
 	
 
-for i in range (list_length):
-	list.append(i)
 
-for i in list:
-	print(i)
 	
 print("")
+
+print("-----------------------------------------")
+
+list_length = 5
+input_sequence = [3, 4, 1, 5]
+
+list = inititalizeList(list_length)
 current_position = 0
 skip_size = 0
 
-print("-----------------------------------------")
+for i in list:
+	print(i)
+
+
 
 for i in input_sequence:
 	print ("")
@@ -71,6 +78,39 @@ for i in input_sequence:
 	
 print("Check: " + str( list[0] * list[1])	)
 
+print("-----------------------------------------")
+
+list_length = 256
+input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
+list = inititalizeList(list_length)
+current_position = 0
+skip_size = 0
+
+for i in list:
+	print(i)
+
+
+
+for i in input_sequence:
+	print ("")
+	print(i)
+	print (str(skip_size) + " is skip size")
+	
+	
+	list = reverse(list, current_position, i)
+	
+	j = i + current_position + skip_size
+	
+	skip_size += 1
+	if j > len(list) - 1:
+		j -= len(list)
+	
+	current_position = j
+	print (str(current_position) + " is curr pos")
+	
+
+	
+print("Check: " + str( list[0] * list[1])	)
 
 
 # --- Day 10: Knot Hash ---
