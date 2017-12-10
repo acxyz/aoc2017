@@ -1,9 +1,16 @@
+import sys
+
 def cleanStream(stream):
 	
 	result = ""
 	readingGarbage = False
 	i = -1
 	lgth = len(stream)
+	
+	depth = 1
+	score = 0
+	
+	garbageChar = 0
 	
 	# print(str(lgth) + " is length" )
 	while i < lgth - 1:
@@ -15,16 +22,25 @@ def cleanStream(stream):
 				readingGarbage = True
 			else:
 				result += thisChar;
+				if thisChar == '{':
+					depth += 1
+				elif thisChar == '}':
+					depth -= 1
+					score += depth
 		else:
 			if thisChar == '!':
 				i += 1;
+			
 			elif thisChar == '>':
 				readingGarbage = False;
+			else:
+				garbageChar += 1
+				
 			
 		
 		
 
-	return result
+	return (result, score, garbageChar)
 ####
 
 	
@@ -46,3 +62,13 @@ print (cleanStream(test6))
 print (cleanStream(test7)) 
 print (cleanStream(test8)) 
 
+if len(sys.argv) > 1:
+	inputFile = sys.argv[1]
+	fileToRead = open(inputFile,'r')
+	inputStream = fileToRead.read()
+	fileToRead.close()
+	
+	output = cleanStream(inputStream)
+	
+	print ("Value of Input Stream is " + str(output[1]))
+	print ("Number of garbage is "+ str(output[2]))
