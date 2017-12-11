@@ -32,16 +32,19 @@ def putList(list, curr_pos, repl_list):
 	
 def reverse(list, curr_pos, size):
 	rev_list = getList(list, curr_pos, size)
-	# print(rev_list)
+	print(rev_list)
 	rev_list.reverse()
-	# print(rev_list)
+	print(rev_list)
 	list = putList(list, curr_pos, rev_list)
-	# print (list)
+	print (list)
 	return list
 	
-def getTransformedList(list_length, input_sequence, current_position, skip_size):
-	list = inititalizeList(list_length)
-	 
+def getTransformedList(the_list, input_sequence, current_position, skip_size):
+	# list = inititalizeList(list_length)
+	print ("")
+	print ("*******************************")
+	print ("")
+	print ("Initital List: " + str(the_list))
 
 	# for i in list:
 		# print(i)
@@ -50,22 +53,27 @@ def getTransformedList(list_length, input_sequence, current_position, skip_size)
 		print ("")
 		print(i)
 		print (str(skip_size) + " is skip size")
+		# print(the_list)
 		
-		list = reverse(list, current_position, i)
+		the_list = reverse(the_list, current_position, i)
+		
+		print(the_list)
 		
 		j = i + current_position + skip_size
 		
-		while j > len(list) - 1:
-			j -= len(list)
+		while j > len(the_list) - 1:
+			j -= len(the_list)
 		
 		current_position = j
 		skip_size += 1
-		if skip_size == len(list):
+		if skip_size == len(the_list):
 			skip_size = 0
-
+		
 			
 		print (str(current_position) + " is curr pos")
-	return (list, current_position, skip_size)
+		print ("--------------------------------------------------")
+		input("Press key to continue")
+	return (the_list, current_position, skip_size)
 
 	
 print("")
@@ -74,11 +82,22 @@ print("-----------------------------------------")
 
 list_length = 5
 input_sequence = [3, 4, 1, 5]
-(lyst, cp, ss) = getTransformedList(list_length, input_sequence, 0, 0)
+(lyst, cp, ss) = getTransformedList(inititalizeList(list_length), input_sequence, 0, 0)
 	
 print("Check: " + str( lyst[0] * lyst[1])	)
 
+if (lyst[0] * lyst[1] != 12):
+	print ("Test failed on getTransformedList")
+	sys.exit(0)
+else:
+	print("get transformed list success")
+
 print("-----------------------------------------")
+
+
+
+
+
 
 
 
@@ -107,10 +126,10 @@ def densify(list):
 		for i in range (16):
 			if start + i < len(list):
 				result ^= list[start + i]
-				print(list[start+i])
-				print(result)
+				# print(list[start+i])
+				# print(result)
 		result_list.append(result)
-		print(result_list)
+		# print(result_list)
 		start += 16
 	return result_list
 	
@@ -123,7 +142,40 @@ def hexify(list):
 			hexx = '0' + hexx
 		result += hexx
 	return result
+
 	
+def sparseHashify(input_string):
+	print ("Input string is " +  input_string)
+	
+	list_length = 256
+	my_list = inititalizeList(list_length)
+	
+	input_sequence = asciify(input_string)
+
+	print("input seq is " + str(input_sequence))
+
+	cp = 0
+	ss = 0
+
+	for i in range (63):
+	
+		(my_list, cp, ss) = getTransformedList(my_list, input_sequence, cp, ss)
+	
+	return(my_list)
+		
+
+
+def hexifyString(input_string):
+
+	my_list = sparseHashify(input_string)
+	print ("Sparse Hash " + str(my_list))
+	dense_hash = densify(my_list)
+	print (dense_hash)
+	hex_string = hexify(dense_hash)
+	print (hex_string)
+	return hex_string
+	
+
 test_list = [64, 7, 255]
 result_string = hexify(test_list)
 print("Hexify: " + result_string)
@@ -146,23 +198,26 @@ if test_result != [49,44,50,44,51,17,31,73,47,23]:
 	print ("Error in asciify function")
 	sys.exit()
 else:
-	print(test_result)
+	print(test_result)	
+	
 
-def hexifyString(input_string):
-	list_length = 256
-	input_sequence = asciify(input_string)
+if (sparseHashify("AoC 2017") != [2,43,207,224,132,199,217,27,176,138,9,177,228,225,153,170,140,244,240,1,7,230,142,114,148,229,60,28,163,3,48,186,24,166,174,106,34,152,20,95,187,59,61,155,179,220,47,6,84,83,188,87,68,154,226,233,42,137,189,194,168,160,109,180,38,117,251,151,162,123,192,98,214,72,127,10,56,121,122,126,202,79,245,175,216,112,136,91,0,8,55,94,46,193,238,85,135,104,82,110,144,70,29,156,105,143,5,211,147,37,215,69,201,52,172,253,128,158,64,4,221,67,18,248,107,39,167,66,213,157,146,171,111,36,125,93,219,169,239,205,197,50,78,65,13,124,133,89,116,99,118,62,75,96,63,231,131,53,184,250,101,185,249,210,73,212,145,74,11,71,190,130,139,183,191,222,86,21,150,247,40,26,45,77,19,149,23,237,254,100,227,236,173,161,102,141,235,76,33,252,255,115,206,218,243,232,242,204,80,103,203,88,14,51,209,134,223,200,30,165,195,129,208,58,196,92,178,90,54,41,108,113,49,15,16,57,198,12,31,22,159,97,81,234,181,241,182,35,246,120,44,119,25,17,32,164]):
+	print ("Error in sparse hash AoC 2017")
+	sys.exit(0)
+else:
+	print ("Sparse hash successful")
 
-	print(input_sequence)
 
-	cp = 0
-	ss = 0
+if (sparseHashify("") != [38,171,116,63,70,137,168,29,198,55,160,15,34,95,58,7,188,189,238,141,30,31,124,241,20,1,244,203,234,73,236,211,122,197,94,227,142,57,72,239,54,81,154,217,10,13,186,161,6,17,128,105,106,69,44,51,248,23,136,173,52,39,40,5,254,195,64,187,192,37,230,153,56,177,84,147,96,249,252,121,166,143,62,169,90,99,196,155,132,159,162,229,76,117,164,127,150,21,88,27,242,67,114,115,226,191,190,53,2,65,206,205,24,251,14,75,74,247,80,11,50,181,46,101,100,179,48,131,32,97,102,201,170,93,104,103,182,125,12,43,220,113,158,167,68,47,66,33,112,135,194,185,218,219,8,245,130,253,204,243,202,109,92,209,156,133,250,107,4,183,60,215,172,231,240,83,98,193,82,139,210,91,146,85,184,163,140,145,178,35,232,151,214,213,200,199,18,221,212,9,152,123,78,3,228,25,26,225,0,61,138,255,222,233,110,129,208,207,176,235,108,77,148,19,180,79,28,149,224,237,86,157,216,111,22,89,16,41,144,71,134,59,246,165,174,223,118,119,36,175,126,87,120,45,42,49]):
+	print ("Error in sparse hash")
+	sys.exit(0)
+else:
+	print ("Sparse hash successful")	
 
-	for i in range (63):
-		(input_sequence, cp, ss) = getTransformedList(list_length, input_sequence, cp, ss)
+print("-----------------------------------------")
 
-	dense_hash = densify(input_sequence)
-	hex_string = hexify(dense_hash)
-	return hex_string
+print("-----------------------------------------")
+	
 	
 print(hexifyString(""))
 
