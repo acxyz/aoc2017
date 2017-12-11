@@ -1,32 +1,54 @@
 import sys
 
+class CircularList:
+	def __init__(self, in_list):
+		self.size = len(in_list)
+		self.list = in_list
+	
+	def get(self, i):
+		while i >= len(self.list):
+			i -= len(self.list)
+		return self.list[i]
+	
+	def put(self, i, in_item):
+		while i >= len(self.list):
+			i -= len(self.list)
+		self.list[i] = in_item
+	
+	def reverse(self):
+		self.list.reverse()
+	# def innerList(self):
+		# return self.list
 
+		
 def inititalizeList(length):
 	list = []
 	for i in range (length):
 		list.append(i)
-	return list
+	return CircularList(list)
 
 
 def getList(list, curr_pos, size):
-	# print(list)
+	if GLB_DEBUG:
+		print(list.list)
 	rev_list = []
 	cp = curr_pos
 	for i in range(size):
-		if (cp >= len(list)):
-			cp -= len(list)
-		rev_list.append(list[cp])
+		# if (cp >= len(list)):
+			# cp -= len(list)
+		rev_list.append(list.get(cp))
 		cp += 1
-	# print (rev_list)
+	if GLB_DEBUG:
+		print (rev_list)
 	return rev_list
 	
 def putList(list, curr_pos, repl_list):
 	out_list = list
 	cp = curr_pos
 	for i in range( len(repl_list) ):
-		if (cp >= len(list)):
-			cp -= len(list)
-		out_list[cp] = repl_list[i]
+		# if (cp >= len(list)):
+			# cp -= len(list)
+		out_list.put(cp,repl_list[i])
 		cp += 1
 	return out_list
 	
@@ -42,13 +64,13 @@ def reverse(list, curr_pos, size):
 		# print (list)
 	return list
 	
-def getTransformedList(the_list, input_sequence, current_position, skip_size):
+def getTransformedList(circ_list, input_sequence, current_position, skip_size):
 	# list = inititalizeList(list_length)
 	if GLB_DEBUG:
 		print ("")
 		print ("*******************************")
 		print ("")
-		print ("Initital List: " + str(the_list))
+		print ("Initital List: " + str(circ_list.list))
 
 	# for i in list:
 		# print(i)
@@ -58,43 +80,43 @@ def getTransformedList(the_list, input_sequence, current_position, skip_size):
 			print ("")
 			print(i)
 			print (str(skip_size) + " is skip size")
-		# print(the_list)
+		# print(circ_list)
 		
-		the_list = reverse(the_list, current_position, i)
+		circ_list = reverse(circ_list, current_position, i)
 		
 		# if GLB_DEBUG:
-			# print(the_list)
+			# print(circ_list)
 		
 		j = i + current_position + skip_size
 		
-		while j >= len(the_list):
-			j -= len(the_list)
+		# while j >= len(circ_list):
+			# j -= len(circ_list)
 		
 		current_position = j
 		skip_size += 1
-		# if skip_size == len(the_list):
+		# if skip_size == len(circ_list):
 			# skip_size = 0
 		
 		if GLB_DEBUG:
 			print (str(current_position) + " is curr pos")
 			print ("--------------------------------------------------")
 			# input("Press key to continue")
-	return (the_list, current_position, skip_size)
+	return (circ_list, current_position, skip_size)
 
 	
 print("")
 
 print("-----------------------------------------")
 
-GLB_DEBUG = False
+GLB_DEBUG = True
 
 list_length = 5
 input_sequence = [3, 4, 1, 5]
 (lyst, cp, ss) = getTransformedList(inititalizeList(list_length), input_sequence, 0, 0)
 	
-print("Check: " + str( lyst[0] * lyst[1])	)
+print("Check: " + str( lyst.get(0) * lyst.get(1))	)
 
-if (lyst[0] * lyst[1] != 12):
+if (lyst.get(0) * lyst.get(1) != 12):
 	print ("Test failed on getTransformedList")
 	sys.exit(0)
 else:
@@ -102,6 +124,7 @@ else:
 
 print("-----------------------------------------")
 
+GLB_DEBUG = False
 
 
 
@@ -111,9 +134,11 @@ print("-----------------------------------------")
 list_length = 256
 input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
 (lyst, cp, ss) = getTransformedList(inititalizeList(list_length), input_sequence, 0, 0)
-print("check: " + str( lyst[0] * lyst[1])	)
 
-if (lyst[0] * lyst[1] != 13760):
+check = lyst.get(0) * lyst.get(1)
+print("check: " + str( check ))
+
+if (check != 13760):
 	print ("Test failed on getTransformedList")
 	sys.exit(0)
 else:
@@ -230,8 +255,11 @@ else:
 
 GLB_DEBUG = False
 
-if (sparseHashify("AoC 2017") != [2,43,207,224,132,199,217,27,176,138,9,177,228,225,153,170,140,244,240,1,7,230,142,114,148,229,60,28,163,3,48,186,24,166,174,106,34,152,20,95,187,59,61,155,179,220,47,6,84,83,188,87,68,154,226,233,42,137,189,194,168,160,109,180,38,117,251,151,162,123,192,98,214,72,127,10,56,121,122,126,202,79,245,175,216,112,136,91,0,8,55,94,46,193,238,85,135,104,82,110,144,70,29,156,105,143,5,211,147,37,215,69,201,52,172,253,128,158,64,4,221,67,18,248,107,39,167,66,213,157,146,171,111,36,125,93,219,169,239,205,197,50,78,65,13,124,133,89,116,99,118,62,75,96,63,231,131,53,184,250,101,185,249,210,73,212,145,74,11,71,190,130,139,183,191,222,86,21,150,247,40,26,45,77,19,149,23,237,254,100,227,236,173,161,102,141,235,76,33,252,255,115,206,218,243,232,242,204,80,103,203,88,14,51,209,134,223,200,30,165,195,129,208,58,196,92,178,90,54,41,108,113,49,15,16,57,198,12,31,22,159,97,81,234,181,241,182,35,246,120,44,119,25,17,32,164]):
+foo = sparseHashify("AoC 2017")
+
+if (foo.list != [2,43,207,224,132,199,217,27,176,138,9,177,228,225,153,170,140,244,240,1,7,230,142,114,148,229,60,28,163,3,48,186,24,166,174,106,34,152,20,95,187,59,61,155,179,220,47,6,84,83,188,87,68,154,226,233,42,137,189,194,168,160,109,180,38,117,251,151,162,123,192,98,214,72,127,10,56,121,122,126,202,79,245,175,216,112,136,91,0,8,55,94,46,193,238,85,135,104,82,110,144,70,29,156,105,143,5,211,147,37,215,69,201,52,172,253,128,158,64,4,221,67,18,248,107,39,167,66,213,157,146,171,111,36,125,93,219,169,239,205,197,50,78,65,13,124,133,89,116,99,118,62,75,96,63,231,131,53,184,250,101,185,249,210,73,212,145,74,11,71,190,130,139,183,191,222,86,21,150,247,40,26,45,77,19,149,23,237,254,100,227,236,173,161,102,141,235,76,33,252,255,115,206,218,243,232,242,204,80,103,203,88,14,51,209,134,223,200,30,165,195,129,208,58,196,92,178,90,54,41,108,113,49,15,16,57,198,12,31,22,159,97,81,234,181,241,182,35,246,120,44,119,25,17,32,164]):
 	print ("Error in sparse hash AoC 2017")
+	print (foo)
 	sys.exit(0)
 else:
 	print ("Sparse hash successful")
