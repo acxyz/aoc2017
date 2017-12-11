@@ -1,0 +1,23 @@
+
+-----------------------------------------
+Check: 12
+get transformed list success
+-----------------------------------------
+check: 13760
+get transformed list success
+-----------------------------------------
+Hexify: 4007ff
+Densify: [64]
+[49, 44, 50, 44, 51, 17, 31, 73, 47, 23]
+Sparse hash successful
+Sparse hash successful
+-----------------------------------------
+-----------------------------------------
+Empty String: a2582a3a0e66e6e86e3812dcb672a272
+AoC 2017: 33efeb34ea91902bb2f59c9920caa6cd
+1,2,3: a2582a3a0e66e6e86e3812dcb672a272
+1,2,4: a2582a3a0e66e6e86e3812dcb672a272
+
+ * * * ALL TESTS PASS!! * * * 
+
+2da93395f1a6bb3472203252e3b17fe5

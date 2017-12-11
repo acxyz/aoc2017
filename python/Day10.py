@@ -289,6 +289,9 @@ print("")
 print(" * * * ALL TESTS PASS!! * * * ")
 print("")
 
+puzzle_input = "227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144"
+print (hexifyString(puzzle_input))
+
 # --- Day 10: Knot Hash ---
 
 # You come across some programs that are trying to implement a software emulation of a hash based on knot-tying. The hash these programs are implementing isn't very strong, but you decide to help them anyway. You make a mental note to remind the Elves later not to invent their own cryptographic functions.
