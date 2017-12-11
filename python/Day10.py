@@ -13,7 +13,7 @@ def getList(list, curr_pos, size):
 	rev_list = []
 	cp = curr_pos
 	for i in range(size):
-		if (cp > len(list) -1):
+		if (cp >= len(list)):
 			cp -= len(list)
 		rev_list.append(list[cp])
 		cp += 1
@@ -24,10 +24,10 @@ def putList(list, curr_pos, repl_list):
 	out_list = list
 	cp = curr_pos
 	for i in range( len(repl_list) ):
-		if (cp > len(list) -1):
+		if (cp >= len(list)):
 			cp -= len(list)
 		out_list[cp] = repl_list[i]
-		cp+=1
+		cp += 1
 	return out_list
 	
 def reverse(list, curr_pos, size):
@@ -67,13 +67,13 @@ def getTransformedList(the_list, input_sequence, current_position, skip_size):
 		
 		j = i + current_position + skip_size
 		
-		while j > len(the_list) - 1:
+		while j >= len(the_list):
 			j -= len(the_list)
 		
 		current_position = j
 		skip_size += 1
-		if skip_size == len(the_list):
-			skip_size = 0
+		# if skip_size == len(the_list):
+			# skip_size = 0
 		
 		if GLB_DEBUG:
 			print (str(current_position) + " is curr pos")
