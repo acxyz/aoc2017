@@ -32,32 +32,38 @@ def putList(list, curr_pos, repl_list):
 	
 def reverse(list, curr_pos, size):
 	rev_list = getList(list, curr_pos, size)
-	print(rev_list)
+	# if GLB_DEBUG:
+		# print(rev_list)
 	rev_list.reverse()
-	print(rev_list)
+	# if GLB_DEBUG:
+		# print(rev_list)
 	list = putList(list, curr_pos, rev_list)
-	print (list)
+	# if GLB_DEBUG:
+		# print (list)
 	return list
 	
 def getTransformedList(the_list, input_sequence, current_position, skip_size):
 	# list = inititalizeList(list_length)
-	print ("")
-	print ("*******************************")
-	print ("")
-	print ("Initital List: " + str(the_list))
+	if GLB_DEBUG:
+		print ("")
+		print ("*******************************")
+		print ("")
+		print ("Initital List: " + str(the_list))
 
 	# for i in list:
 		# print(i)
 
 	for i in input_sequence:
-		print ("")
-		print(i)
-		print (str(skip_size) + " is skip size")
+		if GLB_DEBUG:
+			print ("")
+			print(i)
+			print (str(skip_size) + " is skip size")
 		# print(the_list)
 		
 		the_list = reverse(the_list, current_position, i)
 		
-		print(the_list)
+		# if GLB_DEBUG:
+			# print(the_list)
 		
 		j = i + current_position + skip_size
 		
@@ -69,16 +75,18 @@ def getTransformedList(the_list, input_sequence, current_position, skip_size):
 		if skip_size == len(the_list):
 			skip_size = 0
 		
-			
-		print (str(current_position) + " is curr pos")
-		print ("--------------------------------------------------")
-		input("Press key to continue")
+		if GLB_DEBUG:
+			print (str(current_position) + " is curr pos")
+			print ("--------------------------------------------------")
+			# input("Press key to continue")
 	return (the_list, current_position, skip_size)
 
 	
 print("")
 
 print("-----------------------------------------")
+
+GLB_DEBUG = False
 
 list_length = 5
 input_sequence = [3, 4, 1, 5]
@@ -100,14 +108,22 @@ print("-----------------------------------------")
 
 
 
+list_length = 256
+input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
+(lyst, cp, ss) = getTransformedList(inititalizeList(list_length), input_sequence, 0, 0)
+print("check: " + str( lyst[0] * lyst[1])	)
 
-# list_length = 256
-# input_sequence = [227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144]
-# (lyst, cp, ss) = getTransformedList(list_length, input_sequence, 0, 0)
-# print("check: " + str( lyst[0] * lyst[1])	)
-# print("-----------------------------------------")
+if (lyst[0] * lyst[1] != 13760):
+	print ("Test failed on getTransformedList")
+	sys.exit(0)
+else:
+	print("get transformed list success")
+
+
+print("-----------------------------------------")
 
 # sys.exit()
+
 
 
 
@@ -117,7 +133,8 @@ def asciify(str):
 	return list(str.encode('ascii')) + [17, 31, 73, 47, 23]
 
 def densify(list):
-	print(list)
+	if GLB_DEBUG:
+		print(list)
 	total = 0
 	start = 0
 	result_list = []
@@ -145,20 +162,27 @@ def hexify(list):
 
 	
 def sparseHashify(input_string):
-	print ("Input string is " +  input_string)
+	if GLB_DEBUG:
+		print("")
+		print("")
+		print ("Input string is " +  input_string)
 	
 	list_length = 256
 	my_list = inititalizeList(list_length)
 	
 	input_sequence = asciify(input_string)
 
-	print("input seq is " + str(input_sequence))
+	if GLB_DEBUG:
+		print("input seq is " + str(input_sequence))
 
 	cp = 0
 	ss = 0
 
-	for i in range (63):
-	
+	for i in range (64):
+		if GLB_DEBUG:
+			print("")
+			print ("***** I is " + str(i) + "*******")
+			print ("CP/SS: " + str(cp) + "/" + str(ss))
 		(my_list, cp, ss) = getTransformedList(my_list, input_sequence, cp, ss)
 	
 	return(my_list)
@@ -168,11 +192,14 @@ def sparseHashify(input_string):
 def hexifyString(input_string):
 
 	my_list = sparseHashify(input_string)
-	print ("Sparse Hash " + str(my_list))
+	if GLB_DEBUG:
+		print ("Sparse Hash " + str(my_list))
 	dense_hash = densify(my_list)
-	print (dense_hash)
+	if GLB_DEBUG:
+		print (dense_hash)
 	hex_string = hexify(dense_hash)
-	print (hex_string)
+	if GLB_DEBUG:
+		print (hex_string)
 	return hex_string
 	
 
@@ -199,7 +226,9 @@ if test_result != [49,44,50,44,51,17,31,73,47,23]:
 	sys.exit()
 else:
 	print(test_result)	
-	
+
+
+GLB_DEBUG = False
 
 if (sparseHashify("AoC 2017") != [2,43,207,224,132,199,217,27,176,138,9,177,228,225,153,170,140,244,240,1,7,230,142,114,148,229,60,28,163,3,48,186,24,166,174,106,34,152,20,95,187,59,61,155,179,220,47,6,84,83,188,87,68,154,226,233,42,137,189,194,168,160,109,180,38,117,251,151,162,123,192,98,214,72,127,10,56,121,122,126,202,79,245,175,216,112,136,91,0,8,55,94,46,193,238,85,135,104,82,110,144,70,29,156,105,143,5,211,147,37,215,69,201,52,172,253,128,158,64,4,221,67,18,248,107,39,167,66,213,157,146,171,111,36,125,93,219,169,239,205,197,50,78,65,13,124,133,89,116,99,118,62,75,96,63,231,131,53,184,250,101,185,249,210,73,212,145,74,11,71,190,130,139,183,191,222,86,21,150,247,40,26,45,77,19,149,23,237,254,100,227,236,173,161,102,141,235,76,33,252,255,115,206,218,243,232,242,204,80,103,203,88,14,51,209,134,223,200,30,165,195,129,208,58,196,92,178,90,54,41,108,113,49,15,16,57,198,12,31,22,159,97,81,234,181,241,182,35,246,120,44,119,25,17,32,164]):
 	print ("Error in sparse hash AoC 2017")
@@ -218,8 +247,47 @@ print("-----------------------------------------")
 
 print("-----------------------------------------")
 	
+# sys.exit()	
+
+GLB_DEBUG = False
+
+# The empty string becomes a2582a3a0e66e6e86e3812dcb672a272.
+# AoC 2017 becomes 33efeb34ea91902bb2f59c9920caa6cd.
+# 1,2,3 becomes 3efbe78a8d82f29979031a4aa0b16a9d.
+# 1,2,4 becomes 63960835bcdc130f0b66d7ff4f6a5a8e.
+
+foo1 = hexifyString("")
+foo2 = hexifyString("AoC 2017")
+foo3 = hexifyString("1,2,3")
+foo4 = hexifyString("1,2,4")
+
+if foo1 != "a2582a3a0e66e6e86e3812dcb672a272":
+	print ("HexifyString failed for empty string")
+	sys.exit()
+else:
+	print ("Empty String: " + foo1)
 	
-print(hexifyString(""))
+if foo2 != "33efeb34ea91902bb2f59c9920caa6cd":
+	print ("HexifyString failed for AoC 2017")
+	sys.exit()
+else:
+	print ("AoC 2017: " + foo2)
+
+if foo3 != "3efbe78a8d82f29979031a4aa0b16a9d":
+	print ("HexifyString failed for 1,2,3")
+	sys.exit()
+else:
+	print ("1,2,3: " + foo1)
+
+if foo4 != "63960835bcdc130f0b66d7ff4f6a5a8e":
+	print ("HexifyString failed for 1,2,4")
+	sys.exit()
+else:
+	print ("1,2,4: " + foo1)	
+
+print("")
+print(" * * * ALL TESTS PASS!! * * * ")
+print("")
 
 # --- Day 10: Knot Hash ---
 
