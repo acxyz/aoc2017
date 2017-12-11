@@ -158,21 +158,18 @@ def asciify(str):
 		# print(code)
 	return list(str.encode('ascii')) + [17, 31, 73, 47, 23]
 
-def densify(circ_list):
+def densify(list):
 	if GLB_DEBUG or True:
-		print(circ_list.list)
+		print(list)
 	total = 0
 	start = 0
 	result_list = []
-	while start < circ_list.getLen():
+	while start < len(list):
 		result = 0
 		for i in range (16):
-			if start + i < circ_list.getLen():
-				result ^= circ_list.get(start + i)
-				# print(list[start+i])
-				# print(result)
+			if start + i < len(list):
+				result ^= list[start + i]
 		result_list.append(result)
-		# print(result_list)
 		start += 16
 	return result_list
 	
@@ -219,8 +216,8 @@ def hexifyString(input_string):
 
 	my_circ_list = sparseHashify(input_string)
 	if GLB_DEBUG:
-		print ("Sparse Hash " + str(my_circ_list))
-	dense_hash = densify(my_circ_list)
+		print ("Sparse Hash " + str(my_circ_list.list))
+	dense_hash = densify(my_circ_list.list)
 	if GLB_DEBUG:
 		print (dense_hash)
 	hex_string = hexify(dense_hash)
@@ -238,7 +235,7 @@ if result_string != '4007ff':
 	
 	
 test_list = [65 , 27 , 9 , 1 , 4 , 3 , 40 , 50 , 91 , 7 , 6 , 0 , 2 , 5 , 68 , 22]	
-test_result = densify(CircularList(test_list))
+test_result = densify(test_list)
 if test_result != [64]:
 	print ("Error in densify function")
 	sys.exit()			
@@ -319,6 +316,8 @@ else:
 print("")
 print(" * * * ALL TESTS PASS!! * * * ")
 print("")
+
+sys.exit(0)
 
 puzzle_input = "227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144"
 print (hexifyString(puzzle_input))
