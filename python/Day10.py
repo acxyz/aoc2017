@@ -2,7 +2,6 @@ import sys
 
 class CircularList:
 	def __init__(self, in_list):
-		self.size = len(in_list)
 		self.list = in_list
 	
 	def get(self, i):
@@ -20,6 +19,8 @@ class CircularList:
 	# def innerList(self):
 		# return self.list
 
+	def getLen(self):
+		return len(self.list)
 		
 def inititalizeList(length):
 	list = []
@@ -29,8 +30,8 @@ def inititalizeList(length):
 
 
 def getList(list, curr_pos, size):
-	if GLB_DEBUG:
-		print(list.list)
+	# if GLB_DEBUG:
+		# print(list.list)
 	rev_list = []
 	cp = curr_pos
 	for i in range(size):
@@ -38,8 +39,8 @@ def getList(list, curr_pos, size):
 			# cp -= len(list)
 		rev_list.append(list.get(cp))
 		cp += 1
-	if GLB_DEBUG:
-		print (rev_list)
+	# if GLB_DEBUG:
+		# print (rev_list)
 	return rev_list
 	
 def putList(list, curr_pos, repl_list):
@@ -124,7 +125,7 @@ else:
 
 print("-----------------------------------------")
 
-GLB_DEBUG = False
+GLB_DEBUG = True
 
 
 
@@ -157,17 +158,17 @@ def asciify(str):
 		# print(code)
 	return list(str.encode('ascii')) + [17, 31, 73, 47, 23]
 
-def densify(list):
-	if GLB_DEBUG:
-		print(list)
+def densify(circ_list):
+	if GLB_DEBUG or True:
+		print(circ_list.list)
 	total = 0
 	start = 0
 	result_list = []
-	while start < len(list):
+	while start < circ_list.getLen():
 		result = 0
 		for i in range (16):
-			if start + i < len(list):
-				result ^= list[start + i]
+			if start + i < circ_list.getLen():
+				result ^= circ_list.get(start + i)
 				# print(list[start+i])
 				# print(result)
 		result_list.append(result)
@@ -193,7 +194,7 @@ def sparseHashify(input_string):
 		print ("Input string is " +  input_string)
 	
 	list_length = 256
-	my_list = inititalizeList(list_length)
+	my_circ_list = inititalizeList(list_length)
 	
 	input_sequence = asciify(input_string)
 
@@ -208,18 +209,18 @@ def sparseHashify(input_string):
 			print("")
 			print ("***** I is " + str(i) + "*******")
 			print ("CP/SS: " + str(cp) + "/" + str(ss))
-		(my_list, cp, ss) = getTransformedList(my_list, input_sequence, cp, ss)
+		(my_circ_list, cp, ss) = getTransformedList(my_circ_list, input_sequence, cp, ss)
 	
-	return(my_list)
+	return(my_circ_list)
 		
 
 
 def hexifyString(input_string):
 
-	my_list = sparseHashify(input_string)
+	my_circ_list = sparseHashify(input_string)
 	if GLB_DEBUG:
-		print ("Sparse Hash " + str(my_list))
-	dense_hash = densify(my_list)
+		print ("Sparse Hash " + str(my_circ_list))
+	dense_hash = densify(my_circ_list)
 	if GLB_DEBUG:
 		print (dense_hash)
 	hex_string = hexify(dense_hash)
@@ -237,7 +238,7 @@ if result_string != '4007ff':
 	
 	
 test_list = [65 , 27 , 9 , 1 , 4 , 3 , 40 , 50 , 91 , 7 , 6 , 0 , 2 , 5 , 68 , 22]	
-test_result = densify(test_list)
+test_result = densify(CircularList(test_list))
 if test_result != [64]:
 	print ("Error in densify function")
 	sys.exit()			
@@ -253,7 +254,7 @@ else:
 	print(test_result)	
 
 
-GLB_DEBUG = False
+GLB_DEBUG = True
 
 foo = sparseHashify("AoC 2017")
 
@@ -264,9 +265,11 @@ if (foo.list != [2,43,207,224,132,199,217,27,176,138,9,177,228,225,153,170,140,2
 else:
 	print ("Sparse hash successful")
 
+foo = sparseHashify("")
 
-if (sparseHashify("") != [38,171,116,63,70,137,168,29,198,55,160,15,34,95,58,7,188,189,238,141,30,31,124,241,20,1,244,203,234,73,236,211,122,197,94,227,142,57,72,239,54,81,154,217,10,13,186,161,6,17,128,105,106,69,44,51,248,23,136,173,52,39,40,5,254,195,64,187,192,37,230,153,56,177,84,147,96,249,252,121,166,143,62,169,90,99,196,155,132,159,162,229,76,117,164,127,150,21,88,27,242,67,114,115,226,191,190,53,2,65,206,205,24,251,14,75,74,247,80,11,50,181,46,101,100,179,48,131,32,97,102,201,170,93,104,103,182,125,12,43,220,113,158,167,68,47,66,33,112,135,194,185,218,219,8,245,130,253,204,243,202,109,92,209,156,133,250,107,4,183,60,215,172,231,240,83,98,193,82,139,210,91,146,85,184,163,140,145,178,35,232,151,214,213,200,199,18,221,212,9,152,123,78,3,228,25,26,225,0,61,138,255,222,233,110,129,208,207,176,235,108,77,148,19,180,79,28,149,224,237,86,157,216,111,22,89,16,41,144,71,134,59,246,165,174,223,118,119,36,175,126,87,120,45,42,49]):
+if (foo.list != [38,171,116,63,70,137,168,29,198,55,160,15,34,95,58,7,188,189,238,141,30,31,124,241,20,1,244,203,234,73,236,211,122,197,94,227,142,57,72,239,54,81,154,217,10,13,186,161,6,17,128,105,106,69,44,51,248,23,136,173,52,39,40,5,254,195,64,187,192,37,230,153,56,177,84,147,96,249,252,121,166,143,62,169,90,99,196,155,132,159,162,229,76,117,164,127,150,21,88,27,242,67,114,115,226,191,190,53,2,65,206,205,24,251,14,75,74,247,80,11,50,181,46,101,100,179,48,131,32,97,102,201,170,93,104,103,182,125,12,43,220,113,158,167,68,47,66,33,112,135,194,185,218,219,8,245,130,253,204,243,202,109,92,209,156,133,250,107,4,183,60,215,172,231,240,83,98,193,82,139,210,91,146,85,184,163,140,145,178,35,232,151,214,213,200,199,18,221,212,9,152,123,78,3,228,25,26,225,0,61,138,255,222,233,110,129,208,207,176,235,108,77,148,19,180,79,28,149,224,237,86,157,216,111,22,89,16,41,144,71,134,59,246,165,174,223,118,119,36,175,126,87,120,45,42,49]):
 	print ("Error in sparse hash")
+	print (foo)
 	sys.exit(0)
 else:
 	print ("Sparse hash successful")	
@@ -277,7 +280,7 @@ print("-----------------------------------------")
 	
 # sys.exit()	
 
-GLB_DEBUG = False
+GLB_DEBUG = True
 
 # The empty string becomes a2582a3a0e66e6e86e3812dcb672a272.
 # AoC 2017 becomes 33efeb34ea91902bb2f59c9920caa6cd.
